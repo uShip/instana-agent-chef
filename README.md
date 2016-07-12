@@ -2,5 +2,5 @@
 
 ### automated instana agent installation
 
-* **/onprem** -- Cookbook for onprem clients
-* **/saas** -- Cookbook for saas clients
+* **/instana-agent-installation/onprem** -- Cookbook for onprem clients
+* **/instana-agent-installation/saas** -- Cookbook for saas clients
