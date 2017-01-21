@@ -1,0 +1,10 @@
+name 'instana-agent'
+maintainer 'INSTANA Inc'
+maintainer_email 'stefan.staudenmeyer@instana.com'
+license 'Proprietary - All Rights Reserved'
+description 'Installs/Configures instana-agent'
+long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
+version '1.0.0'
+chef_version '>= 12.14.0'
+provides 'instana-agent::default'
+recipe 'default', 'Check the java installation, download and start the agent'
