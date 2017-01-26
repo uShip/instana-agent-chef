@@ -1,3 +1,4 @@
 .kitchen/
 .kitchen.yml
 Gemfile.lock
+.idea/
