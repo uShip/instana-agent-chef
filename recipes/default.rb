@@ -46,6 +46,8 @@ yum_repository 'Instana-Agent' do
   description 'The Agent repository by Instana, Inc.'
   baseurl "https://_:#{node['instana']['agent']['agent_key']}@packages.instana.io/agent/generic/x86_64"
   gpgkey 'https://packages.instana.io/Instana.gpg'
+  repo_gpgcheck true
+  gpgcheck false
   action [:create, :makecache]
   only_if { %w(suse rhel fedora).include? node['platform_family'] }
 end
