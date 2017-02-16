@@ -36,6 +36,9 @@
 * **(Required)** `node['instana']['agent']['endpoint']['host']` = (string) Instana - backend monitoring endpoint - hostname
 * **(Required)** `node['instana']['agent']['endpoint']['port']` = (string) Instana - backend monitoring endpoint - port
 
+* **(Optional)** `node['instana']['agent']['update']['enabled']` = (bool) If auto-updates should be enabled
+* **(Optional)** `node['instana']['agent']['update']['time']` = (string) Time in hh:ss when to launch auto-updates
+* **(Optional)** `node['instana']['agent']['update']['interval']` = (array) Interval of auto-updates (see agent-update template for values)
 
 * **(Optional)** `node['instana']['agent']['hostTags']` = (array) List of host-tag strings 
 * **(Optional)** `node['instana']['agent']['jdk']` = (minimal bundle) Path of your JDK install 
@@ -45,4 +48,4 @@
 * [Stefan Staudenmeyer](mailto:stefan.staudenmeyer@instana.com "Stefan Staudenmeyer")
 
 
-    Copyright 2016, INSTANA Inc (All rights reserved)
+Copyright 2016, INSTANA Inc (All rights reserved)

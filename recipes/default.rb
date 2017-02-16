@@ -69,6 +69,18 @@ template '/opt/instana/agent/etc/instana/com.instana.agent.main.sender.Backend.c
   })
 end
 
+template '/opt/instana/agent/etc/instana/com.instana.agent.main.config.UpdateManager.cfg' do
+  source 'agent-update.erb'
+  mode '0640'
+  owner 'root'
+  group 'root'
+  variables({
+    interval: node['instana']['agent']['update']['interval'],
+    enabled: (node['instana']['agent']['update']['enabled'] ? 'AUTO' : 'OFF'),
+    time: node['instana']['agent']['update']['time']
+  })
+end
+
 service 'instana-agent' do
   action [:enable, :start]
 end

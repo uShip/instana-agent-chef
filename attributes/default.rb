@@ -5,4 +5,7 @@ node.default['instana']['agent']['flavor'] = 'full'
 node.default['instana']['agent']['agent_key'] = ''
 node.default['instana']['agent']['endpoint']['host'] = ''
 node.default['instana']['agent']['endpoint']['port'] = 443
+node.default['instana']['agent']['update']['interval'] = 'DAY' # see template agent-update.erb for intervals
+node.default['instana']['agent']['update']['enabled'] = true
+node.default['instana']['agent']['update']['time'] = '04:30'
 node.default['instana']['agent']['jdk'] = ''
