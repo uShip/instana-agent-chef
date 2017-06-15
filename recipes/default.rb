@@ -6,29 +6,29 @@
 # Copyright 2016, INSTANA Inc (All rights reserved)
 #
 
-log 'jdk not set' do
+log 'fail if jdk not set for minimal install' do
   message <<-EOT
     When picking the minimal installation method for the Instana Agent,
-    please specify a path to an Oracle JDK.
+    please specify a path to an Oracle- or OpenJDK.
   EOT
   level :error
   only_if do
-    node['instana']['agent']['flavor'] == 'minimal' &&
-        node['instana']['agent']['jdk'] == ''
+    node['instana']['agent']['flavor'] == 'minimal' && node['instana']['agent']['jdk'] == ''
   end
 end
 
-log 'jdk invalid' do
+log 'fail if flavor is of unknown type' do
   message <<-EOT
-    We think the path you have specified does not classify as an Oracle JDK.
-    Please check the path and run the script again.
+    The flavor attribute for the agent must be of either "full" or "minimal" value.
   EOT
   level :error
-  only_if do
-    node['instana']['agent']['flavor'] == 'minimal' &&
-        node['instana']['agent']['jdk'] != '' &&
-        !File.exist?("#{node['instana']['agent']['jdk']}/lib/tools.jar")
-  end
+  not_if { %w(full minimal).include? node['instana']['agent']['flavor'] }
+end
+
+http_request 'check agent key for validity before making system changes' do
+  action :get
+  url 'https://packages.instana.io/agent/generic/x86_64/repodata/repomd.xml'
+  headers(Authorization: "Basic #{::Base64.encode64("_:#{node['instana']['agent']['agent_key']}")}")
 end
 
 apt_repository 'Instana-Agent' do
@@ -49,7 +49,7 @@ yum_repository 'Instana-Agent' do
   repo_gpgcheck true
   gpgcheck false
   action [:create, :makecache]
-  only_if { %w(suse rhel fedora).include? node['platform_family'] }
+  only_if { %w(suse rhel).include? node['platform_family'] }
 end
 
 package 'instana-agent' do
