@@ -32,20 +32,47 @@
 ## Attributes
 
 * **(Required)** `node['instana']['agent']['flavor']` = (string) Either "minimal" or "full"
-* **(Required)** `node['instana']['agent']['agentKey']` = (string) Your tenancy agent key
-* **(Required)** `node['instana']['agent']['endpoint']['host']` = (string) Instana - backend monitoring endpoint - hostname
-* **(Required)** `node['instana']['agent']['endpoint']['port']` = (string) Instana - backend monitoring endpoint - port
 
-* **(Optional)** `node['instana']['agent']['update']['enabled']` = (bool) If auto-updates should be enabled
-* **(Optional)** `node['instana']['agent']['update']['time']` = (string) Time in hh:ss when to launch auto-updates
-* **(Optional)** `node['instana']['agent']['update']['interval']` = (array) Interval of auto-updates (see agent-update template for values)
+* **(Required)** `node['instana']['agent']['agent_key']` - Your agent key credential (default '')
+* **(Required)** `node['instana']['agent']['endpoint']['host']` - Your assigned monitoring endpoint or the hostname of 
+    your on premises Instana backend instance (default 'saas-us-west-2.instana.io')
+* **(Required)** `node['instana']['agent']['endpoint']['port']` - The port of the monitoring endpoint (default 443)
+* **(Optional)** `node['instana']['agent']['flavor']` - The agent flavor, either full or minimal (default 'full')
+* **(Optional)** `node['instana']['agent']['jdk']` - In case you're picking the minimal agent - The JDK installation 
+    path (default '')
+* **(Optional)** `node['instana']['agent']['user']` - Which user the agent should run as (default 'root')
+* **(Optional)** `node['instana']['agent']['group']` - Which group the agent should run as (default 'root')
+* **(Optional)** `node['instana']['agent']['mode']` - Which mode the agent should run under, either 'apm', 
+    'infrastructure' or 'off' (default 'apm')
+* **(Optional)** `node['instana']['agent']['update']['enabled']` - Whether the agent should update itself.
+* **(Optional)** `node['instana']['agent']['update']['interval']` - Preferred interval of updates, either 'DAY' or a 
+    week of the week in caps (default 'DAY')
+* **(Optional)** `node['instana']['agent']['update']['time']` - Time of interval for updates (default '04:30') 
+* **(Optional)** `node['instana']['agent']['update']['pin']` - Pin the sensor version (git sha hash, default '') 
+* **(Optional)** `node['instana']['agent']['proxy']['enabled']` - Can the machine only access the internet through a 
+    proxy? (default false)
+* **(Optional)** `node['instana']['agent']['proxy']['type']` - The proxy's type (default 'http')
+* **(Optional)** `node['instana']['agent']['proxy']['host']` - The proxy's hostname (default '')
+* **(Optional)** `node['instana']['agent']['proxy']['port']` - The proxy's port (default 0)
+* **(Optional)** `node['instana']['agent']['proxy']['dns']` - Should the machine use the proxy for DNS resolution? 
+    (default false)
+* **(Optional)** `node['instana']['agent']['proxy']['username']` - If the proxy needs credentials - username 
+    (default '')
+* **(Optional)** `node['instana']['agent']['proxy']['password']` - Proxy user's password (default '')
+* **(Optional)** `node['instana']['agent']['mirror']['enabled']` - Did you set up a sensor mirror for agent updates? 
+    (default false)
+* **(Optional)** `node['instana']['agent']['mirror']['urls']['release']` - Repo address of the release mirror 
+    (default '')
+* **(Optional)** `node['instana']['agent']['mirror']['urls']['shared']` - Repo address of the shared mirror 
+    (default '')
+* **(Optional)** `node['instana']['agent']['mirror']['auth']['enabled']` - Does the mirror require authentication? 
+    (default false)
+* **(Optional)** `node['instana']['agent']['mirror']['auth']['username']` - Mirror username
+* **(Optional)** `node['instana']['agent']['mirror']['auth']['password']` - Mirror password
 
-* **(Optional)** `node['instana']['agent']['hostTags']` = (array) List of host-tag strings 
-* **(Optional)** `node['instana']['agent']['jdk']` = (minimal bundle) Path of your JDK install 
 
 ## License and Authors
 
 * [Stefan Staudenmeyer](mailto:stefan.staudenmeyer@instana.com "Stefan Staudenmeyer")
-
 
 Copyright 2016, INSTANA Inc (All rights reserved)

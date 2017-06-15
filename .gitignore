@@ -2,3 +2,5 @@
 .kitchen.yml
 Gemfile.lock
 .idea/
+.kitchen.local.yml
+test/integration/attributes/*yml
