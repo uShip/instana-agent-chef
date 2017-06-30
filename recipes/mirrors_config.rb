@@ -1,16 +1,17 @@
 # encoding: utf-8
+
 #
 # Cookbook Name:: instana-agent
 # Recipe:: mirrors_config
 #
-# Copyright 2016, INSTANA Inc (All rights reserved)
+# Copyright 2017, INSTANA Inc
 #
 
 template '/opt/instana/agent/etc/mvn-settings.xml' do
   source 'maven_settings.erb'
   mode '0644'
-  owner node['instana']['agent']['user']
-  group node['instana']['agent']['group']
+  owner 'root'
+  group 'root'
   variables(
     proxy_enabled: node['instana']['agent']['proxy']['enabled'],
     proxy_type: node['instana']['agent']['proxy']['type'],
@@ -25,6 +26,8 @@ template '/opt/instana/agent/etc/mvn-settings.xml' do
     release_repourl: node['instana']['agent']['mirror']['urls']['release'],
     shared_repourl: node['instana']['agent']['mirror']['urls']['shared']
   )
-  only_if { node['instana']['agent']['proxy']['enabled'] }
-  notifies :restart, 'service[instana-agent]', :immediately
+  only_if do
+    node['instana']['agent']['proxy']['enabled'] ||
+      node['instana']['agent']['mirror']['enabled']
+  end
 end

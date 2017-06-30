@@ -1,9 +1,10 @@
 # encoding: utf-8
+
 #
-# Cookbook Name:: instana_agent
-# Recipe:: source-update
+# Cookbook Name:: instana-agent
+# Recipe:: source_update
 #
-# Copyright 2016, INSTANA Inc (All rights reserved)
+# Copyright 2017, INSTANA Inc
 #
 
 config_dir = '/opt/instana/agent/etc/instana/com.instana.agent.'
@@ -11,8 +12,8 @@ config_dir = '/opt/instana/agent/etc/instana/com.instana.agent.'
 template "#{config_dir}main.config.UpdateManager.cfg" do
   source 'agent_update.erb'
   mode '0644'
-  owner node['instana']['agent']['user']
-  group node['instana']['agent']['group']
+  owner 'root'
+  group 'root'
   action :create
   variables(
     interval: node['instana']['agent']['update']['interval'],
@@ -28,8 +29,8 @@ end
 template "#{config_dir}bootstrap.AgentBootstrap.cfg" do
   source 'agent_bootstrap.erb'
   mode '0644'
-  owner node['instana']['agent']['user']
-  group node['instana']['agent']['group']
+  owner 'root'
+  group 'root'
   action :create
   variables(
     version: node['instana']['agent']['update']['pin']

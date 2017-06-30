@@ -1,9 +1,10 @@
 # encoding: utf-8
+
 #
 # Cookbook Name:: instana-agent
 # Recipe:: backend_config
 #
-# Copyright 2016, INSTANA Inc (All rights reserved)
+# Copyright 2017, INSTANA Inc
 #
 
 config_dir = '/opt/instana/agent/etc/instana/'
@@ -11,8 +12,8 @@ config_dir = '/opt/instana/agent/etc/instana/'
 template "#{config_dir}com.instana.agent.main.sender.Backend.cfg" do
   source 'agent_backend.erb'
   mode '0644'
-  owner node['instana']['agent']['user']
-  group node['instana']['agent']['group']
+  owner 'root'
+  group 'root'
   variables(
     key: node['instana']['agent']['agent_key'],
     host: node['instana']['agent']['endpoint']['host'],
@@ -25,5 +26,4 @@ template "#{config_dir}com.instana.agent.main.sender.Backend.cfg" do
     proxy_username: node['instana']['agent']['proxy']['username'],
     proxy_password: node['instana']['agent']['proxy']['password']
   )
-  notifies :restart, 'service[instana-agent]', :immediately
 end

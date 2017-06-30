@@ -3,8 +3,12 @@
 # instana-agent - Attributes file - defining attributes for the instana-agent
 
 # Author:: Stefan Staudenmeyer <stefan.staudenmeyer@instana.com>
-# Copyright:: 2009-2017, Instana, Inc.
-# License:: Proprietary - All rights reserved.
+# Copyright:: 2017, Instana, Inc.
+# License:: Apache-2.0
+
+# Do you want to do further templating before the agent is started after the
+# setup, set this to false.
+node.default['instana']['agent']['run'] = true
 
 # This mode specifies the mode under which the Instana agent should run.
 # Possible values are "apm", "infrastructure" and "off".
@@ -21,9 +25,13 @@ node.default['instana']['agent']['limit']['cpu']['quota'] = 0.5 # ( == 50%)
 node.default['instana']['agent']['limit']['memory']['enabled'] = true
 node.default['instana']['agent']['limit']['memory']['maxsize'] = 512 # (MB)
 
-# We ship our Instana Agent in two flavors: "full" and "minimal".
+# We ship our Instana Agent in two flavors: "full", "static" and "minimal".
 # The full flavored agent comes with a JDK (zulu OpenJDK in recent versions)
 # and a set of all recent sensors that we ship on a daily basis.
+# The static agent is a fully featured agent package with a JDK (see above),
+# and it has packaged all the sensors and feature discovery libraries. It's
+# main purpose is to be used behind thick firewalls, it doesn't try to update
+# from our repositories and shouldn't connect to the internet at all.
 # The minimal flavored agent comes with neither and therefore upon start
 # downloads the sensors. It requires the JAVA_HOME environment variable, or
 # node['instana']['agent']['jdk'] set in order to start.
@@ -56,14 +64,6 @@ node.default['instana']['agent']['endpoint']['port'] = 443
 # environment variable externally for the user the Instana agent should run as.
 # See:: https://instana.atlassian.net/wiki/display/DOCS/The+Manual+Installation+Process
 node.default['instana']['agent']['jdk'] = '' # local JDK installation path
-
-# The Instana agent can run as a specific user / group. Please notice that this
-# can lead to problems in attaching to the software on the machine, but we
-# support it. The user and its group must exist beforehand and have shell
-# access rights to run properly.
-# See:: https://instana.atlassian.net/wiki/display/DOCS/Manual+Agent+Installation
-node.default['instana']['agent']['user'] = 'root'
-node.default['instana']['agent']['group'] = 'root'
 
 # The Instana agent updates its set of sensors automatically in the background
 # unless configured differently.

@@ -1,9 +1,10 @@
 # encoding: utf-8
+
 #
 # Cookbook Name:: instana-agent
 # Recipe:: default
 #
-# Copyright 2016, INSTANA Inc (All rights reserved)
+# Copyright 2017, INSTANA Inc
 #
 
 config_dir = '/opt/instana/agent/etc/instana/'
@@ -26,7 +27,7 @@ log 'fail if flavor is of unknown type' do
     or "minimal" value.
   EOT
   level :error
-  not_if { %w(full minimal).include? node['instana']['agent']['flavor'] }
+  not_if { %w[full minimal static].include? node['instana']['agent']['flavor'] }
 end
 
 include_recipe 'instana-agent::system'
@@ -63,5 +64,6 @@ end
 
 service 'instana-agent' do
   supports status: true, restart: true
-  action [:enable, :start]
+  action :start
+  only_if { node['instana']['agent']['run'] }
 end

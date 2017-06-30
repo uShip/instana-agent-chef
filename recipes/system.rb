@@ -1,33 +1,18 @@
 # encoding: utf-8
+
 #
 # Cookbook Name:: instana-agent
-# Recipe:: repository
+# Recipe:: system
+#
+# Copyright 2017, INSTANA Inc
+#
+
+include_recipe 'zypper::default' if node['platform_family'] == 'suse'
 
 systemd_srv_dir = '/etc/systemd/system/instana-agent.service.d'
+gpg_path = 'https://packages.instana.io/Instana.gpg'
 domain = "https://_:#{node['instana']['agent']['agent_key']}@"
 domain << 'packages.instana.io'
-
-permissions = "#{node['instana']['agent']['user']}:"
-permissions << node['instana']['agent']['group']
-
-ruby_block 'check user/group permissions' do
-  block do
-    unless node['etc']['passwd'].key? node['instana']['agent']['user']
-      msg = 'Your requested user does not seem to exist on this system.'
-      msg << ' Please make sure it does before running this cookbook again.'
-      raise msg
-    end
-    unless node['etc']['group'].key? node['instana']['agent']['group']
-      msg = 'Your requested group does not seem to exist on this system.'
-      msg << ' Please make sure it does before running this cookbook again.'
-      raise msg
-    end
-  end
-  only_if do
-    (node['instana']['agent']['user'] != 'root' ||
-      node['instana']['agent']['group'] != 'root')
-  end
-end
 
 package 'apt-transport-https' do
   action :install
@@ -38,7 +23,7 @@ apt_repository 'Instana-Agent' do
   repo_name 'Instana-Agent'
   distribution 'generic'
   arch 'amd64'
-  key 'https://packages.instana.io/Instana.gpg'
+  key gpg_path
   uri "#{domain}/agent"
   components ['main']
   action :add
@@ -48,11 +33,18 @@ end
 yum_repository 'Instana-Agent' do
   description 'The Agent repository by Instana, Inc.'
   baseurl "#{domain}/agent/generic/x86_64"
-  gpgkey 'https://packages.instana.io/Instana.gpg'
+  gpgkey gpg_path
   repo_gpgcheck true
   gpgcheck false
-  action [:create, :makecache]
-  only_if { %w(suse rhel amazon).include? node['platform_family'] }
+  action %i[create makecache]
+  only_if { %w[rhel suse amazon].include? node['platform_family'] }
+end
+
+zypper_repo 'Instana-Agent' do
+  action :add
+  key gpg_path
+  uri "#{domain}/agent/generic/x86_64"
+  only_if { node['platform_family'] == 'suse' }
 end
 
 package 'instana-agent' do
@@ -65,50 +57,35 @@ service 'stop the instana agent until it\'s configured' do
   action :stop
 end
 
-execute 'recursively chown agent dir to user/group' do
-  command "chown -R #{permissions} /opt/instana/agent"
-  action :run
-  only_if do
-    (node['instana']['agent']['user'] != 'root' ||
-      node['instana']['agent']['group'] != 'root')
-  end
-end
-
 directory systemd_srv_dir do
   owner 'root'
   group 'root'
   mode '0644'
   action :create
-  only_if do
-    (node['instana']['agent']['user'] != 'root' ||
-      node['instana']['agent']['group'] != 'root') &&
-      node['init_package'] == 'systemd'
-  end
+  only_if { node['init_package'] == 'systemd' }
 end
 
-template "#{systemd_srv_dir}/10-users.conf" do
+template "#{systemd_srv_dir}/10-javapath.conf" do
   source 'systemd_service.erb'
   owner 'root'
   group 'root'
   mode '0644'
-  action :create_if_missing
+  action :create
   variables(
-    user: node['instana']['agent']['user'],
-    group: node['instana']['agent']['group']
+    path: node['instana']['agent']['jdk']
   )
   only_if do
-    (node['instana']['agent']['user'] != 'root' ||
-      node['instana']['agent']['group'] != 'root') &&
-      node['init_package'] == 'systemd'
+    node['init_package'] == 'systemd' &&
+      node['instana']['agent']['flavor'] != 'full'
   end
 end
 
 template "#{systemd_srv_dir}/20-resources.conf" do
-  source 'systemd_service.erb'
+  source 'systemd_resources.erb'
   owner 'root'
   group 'root'
   mode '0644'
-  action :create_if_missing
+  action :create
   variables(
     limit_cpu: node['instana']['agent']['limit']['cpu']['enabled'],
     cpu_quota: node['instana']['agent']['limit']['cpu']['quota'],
@@ -127,15 +104,13 @@ template '/etc/default/instana-agent' do
   owner 'root'
   group 'root'
   mode '0644'
-  action :create_if_missing
+  action :create
   variables(
-    user: node['instana']['agent']['user'],
-    group: node['instana']['agent']['group']
+    path: node['instana']['agent']['jdk']
   )
   only_if do
-    (node['instana']['agent']['user'] != 'root' ||
-      node['instana']['agent']['group'] != 'root') &&
-      node['init_package'] != 'systemd' &&
+    node['init_package'] != 'systemd' &&
+      node['instana']['agent']['flavor'] != 'full' &&
       ::Dir.exist?('/etc/default')
   end
 end
@@ -145,15 +120,13 @@ template '/etc/sysconfig/instana-agent' do
   owner 'root'
   group 'root'
   mode '0644'
-  action :create_if_missing
+  action :create
   variables(
-    user: node['instana']['agent']['user'],
-    group: node['instana']['agent']['group']
+    path: node['instana']['agent']['jdk']
   )
   only_if do
-    (node['instana']['agent']['user'] != 'root' ||
-      node['instana']['agent']['group'] != 'root') &&
-      node['init_package'] != 'systemd' &&
+    node['init_package'] != 'systemd' &&
+      node['instana']['agent']['flavor'] != 'full' &&
       !::Dir.exist?('/etc/default')
   end
 end
