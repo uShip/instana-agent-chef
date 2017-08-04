@@ -9,25 +9,13 @@
 
 config_dir = '/opt/instana/agent/etc/instana/'
 
-log 'fail if jdk not set for minimal install' do
-  message <<-EOT
-    When picking the minimal installation method for the Instana Agent,
-    please specify a path to an Oracle- or OpenJDK.
-  EOT
-  level :error
-  only_if do
-    node['instana']['agent']['flavor'] == 'minimal' &&
-      node['instana']['agent']['jdk'] == ''
-  end
-end
-
 log 'fail if flavor is of unknown type' do
   message <<-EOT
-    The flavor attribute for the agent must be of either "full"
-    or "minimal" value.
+    The flavor attribute for the agent must be either
+    "dynamic" or "static".
   EOT
   level :error
-  not_if { %w[full minimal static].include? node['instana']['agent']['flavor'] }
+  not_if { %w[dynamic static].include? node['instana']['agent']['flavor'] }
 end
 
 include_recipe 'instana-agent::system'

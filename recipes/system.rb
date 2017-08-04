@@ -65,22 +65,7 @@ directory systemd_srv_dir do
   only_if { node['init_package'] == 'systemd' }
 end
 
-template "#{systemd_srv_dir}/10-javapath.conf" do
-  source 'systemd_service.erb'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  action :create
-  variables(
-    path: node['instana']['agent']['jdk']
-  )
-  only_if do
-    node['init_package'] == 'systemd' &&
-      node['instana']['agent']['flavor'] != 'full'
-  end
-end
-
-template "#{systemd_srv_dir}/20-resources.conf" do
+template "#{systemd_srv_dir}/10-resources.conf" do
   source 'systemd_resources.erb'
   owner 'root'
   group 'root'
@@ -96,37 +81,5 @@ template "#{systemd_srv_dir}/20-resources.conf" do
     node['init_package'] == 'systemd' &&
       (node['instana']['agent']['limit']['cpu']['enabled'] ||
         node['instana']['agent']['limit']['memory']['enabled'])
-  end
-end
-
-template '/etc/default/instana-agent' do
-  source 'sysvinit_service.erb'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  action :create
-  variables(
-    path: node['instana']['agent']['jdk']
-  )
-  only_if do
-    node['init_package'] != 'systemd' &&
-      node['instana']['agent']['flavor'] != 'full' &&
-      ::Dir.exist?('/etc/default')
-  end
-end
-
-template '/etc/sysconfig/instana-agent' do
-  source 'sysvinit_service.erb'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  action :create
-  variables(
-    path: node['instana']['agent']['jdk']
-  )
-  only_if do
-    node['init_package'] != 'systemd' &&
-      node['instana']['agent']['flavor'] != 'full' &&
-      !::Dir.exist?('/etc/default')
   end
 end

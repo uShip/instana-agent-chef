@@ -1,35 +1,20 @@
 # instana-agent Cookbook
 
-This [Chef](https://chef.io) cookbook installs, configures and runs the monitoring agent
-for the [Instana monitoring suite](https://www.instana.com).
-
-## Requirements
-
-At the moment, one of the following JVMs are required for running the agent:
-
-* Oracle Hotspot JDK 8
-* Zulu JDK 8
-* IBM J9 8
+This [Chef](https://chef.io) cookbook installs, configures and runs the monitoring agent for the [Instana monitoring suite](https://www.instana.com).
 
 ## Flavors
 
-**`instana-agent-full`**
+**`instana-agent-dynamic`**
 
-It comes with a prebundled JDK. Also it includes the latest version of all the sensors in
-their latest version so that firewalls in tight onprem networks do not have to pull them
-the first time the agent starts.
+This blank agent comes bundled with a JDK and is configured to download all neccessary sensors when it starts. Additionally, it is configured to update its set of sensors on a daily basis.
 
-**`instana-agent-minimal`**
+**`instana-agent-static`**
 
-It comes with neither the JDK nor sensors bundled. Upon startup, it connects to our agent
-artifact repository to download all the sensors. If you use this one, a `JAVA_HOME` path
-needs to be specified.
+This "gated" agent package is supposed to not connect to the internet at all. It comes with all the recent sensors and a JDK, and is your package of choice when you run a tight firewall setup.
 
 ## Monitoring endpoint
 
-If you're an onprem customer, please specify your hostname and port in the corresponding
-attributes. If you're using our SaaS offering, and don't know which endpoint the agent
-should send to, feel free to ask our sales team.
+If you're an onprem customer, please specify your hostname and port in the corresponding attributes. If you're using our SaaS offering, and don't know which endpoint the agent should send to, feel free to ask our sales team.
 
 ## Supported operating systems
 

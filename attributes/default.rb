@@ -25,19 +25,16 @@ node.default['instana']['agent']['limit']['cpu']['quota'] = 0.5 # ( == 50%)
 node.default['instana']['agent']['limit']['memory']['enabled'] = true
 node.default['instana']['agent']['limit']['memory']['maxsize'] = 512 # (MB)
 
-# We ship our Instana Agent in two flavors: "full", "static" and "minimal".
-# The full flavored agent comes with a JDK (zulu OpenJDK in recent versions)
-# and a set of all recent sensors that we ship on a daily basis.
-# The static agent is a fully featured agent package with a JDK (see above),
-# and it has packaged all the sensors and feature discovery libraries. It's
-# main purpose is to be used behind thick firewalls, it doesn't try to update
-# from our repositories and shouldn't connect to the internet at all.
-# The minimal flavored agent comes with neither and therefore upon start
-# downloads the sensors. It requires the JAVA_HOME environment variable, or
-# node['instana']['agent']['jdk'] set in order to start.
-# Possible values: "full" | "minimal".
+# We ship our Instana Agent in two flavors: "dynamic" and "static".
+# The static flavored agent comes with a JDK (Zulu OpenJDK in a recent
+# version) and a set of all recent sensors that we ship on a daily basis.
+# It is the perfect fit when you have strict firewall settings and don't
+# want the agents to connect to the internet, ever.
+# The dynamic flavored agent comes with a JDK as well, and downloads the
+# required sensors on startup phase.
+# Possible values: "static" | "dynamic".
 # See:: https://instana.atlassian.net/wiki/display/DOCS/The+Manual+Installation+Process
-node.default['instana']['agent']['flavor'] = 'full'
+node.default['instana']['agent']['flavor'] = 'dynamic'
 
 # When you register with us you receive a string that makes the credentials you
 # need in order to download the agent and its sensors. It can be seen as a
@@ -57,13 +54,6 @@ node.default['instana']['agent']['endpoint']['host'] =
 # number is 1444.
 # See:: https://instana.atlassian.net/wiki/pages/viewpage.action?pageId=1179831
 node.default['instana']['agent']['endpoint']['port'] = 443
-
-# For minimal flavored agents (see node['instana']['agent']['flavor']), we
-# require a JDK installation path to be set in order to be able to start the
-# agent. An alternative to setting this path here would be to set the JAVA_HOME
-# environment variable externally for the user the Instana agent should run as.
-# See:: https://instana.atlassian.net/wiki/display/DOCS/The+Manual+Installation+Process
-node.default['instana']['agent']['jdk'] = '' # local JDK installation path
 
 # The Instana agent updates its set of sensors automatically in the background
 # unless configured differently.
