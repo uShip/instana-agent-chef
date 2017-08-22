@@ -29,6 +29,7 @@ file "#{node['instana']['agent']['config_dir']}/com.instana.agent.main.config.Ag
   action :create_if_missing
 end
 
+# TODO revisit this
 ruby_block 'set the agent mode (default APM)' do
   block do
     case node['instana']['agent']['mode']
@@ -40,10 +41,10 @@ ruby_block 'set the agent mode (default APM)' do
       value = 'APM'
     end
     line = "mode = #{value}"
-    path = '/opt/instana/agent/etc/instana/'
-    path << 'com.instana.agent.main.config.Agent.cfg'
+    path = "#{node['instana']['agent']['config_dir']}/com.instana.agent.main.config.Agent.cfg"
     file = Chef::Util::FileEdit.new(path)
-    file.insert_line_if_no_match(/(.*?)mode =.*/, line)
+    file.search_file_replace_line(/^mode =.*/, line)
+    file.insert_line_if_no_match(/^mode =.*/, line)
     file.write_file
   end
 end
