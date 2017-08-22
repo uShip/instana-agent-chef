@@ -7,7 +7,7 @@
 # Copyright 2017, INSTANA Inc
 #
 
-template '/opt/instana/agent/etc/instana/configuration.yaml' do
+template "#{node['instana']['agent']['config_dir']}/configuration.yaml" do
   source 'agent_config.erb'
   mode '0640'
   owner 'root'
