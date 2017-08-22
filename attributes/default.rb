@@ -59,7 +59,7 @@ node.default['instana']['agent']['endpoint']['port'] = 443
 # unless configured differently.
 # Possible values: true | false.
 # See:: https://instana.atlassian.net/wiki/display/DOCS/Agent+Versioning+and+Update+Management
-node.default['instana']['agent']['update']['enabled'] = true
+node.default['instana']['agent']['update']['enabled'] = false
 
 # See node['instana']['agent']['update']['enabled'].
 # Possible values: "DAY" | "MONDAY" | "TUESDAY"...
