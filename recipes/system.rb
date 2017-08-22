@@ -11,8 +11,7 @@ include_recipe 'zypper::default' if node['platform_family'] == 'suse'
 
 systemd_srv_dir = '/etc/systemd/system/instana-agent.service.d'
 gpg_path = 'https://packages.instana.io/Instana.gpg'
-domain = "https://_:#{node['instana']['agent']['agent_key']}@"
-domain << 'packages.instana.io'
+domain = "https://_:#{node['instana']['agent']['agent_key']}@packages.instana.io"
 
 package 'apt-transport-https' do
   action :install
@@ -50,11 +49,6 @@ end
 package 'instana-agent' do
   package_name "instana-agent-#{node['instana']['agent']['flavor']}"
   action :upgrade
-end
-
-service 'stop the instana agent until it\'s configured' do
-  service_name 'instana-agent'
-  action :stop
 end
 
 directory systemd_srv_dir do
