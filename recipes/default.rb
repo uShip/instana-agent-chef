@@ -50,6 +50,7 @@ end
 
 service 'instana-agent' do
   supports status: true, restart: true
-  action :start
+  action [:enable, :start]
+  subscribes :restart, "execute[systemd-daemon-reload]"
   only_if { node['instana']['agent']['run'] }
 end
