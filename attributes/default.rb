@@ -6,10 +6,6 @@
 # Copyright:: 2017, Instana, Inc.
 # License:: Apache-2.0
 
-# Do you want to do further templating before the agent is started after the
-# setup, set this to false.
-node.default['instana']['agent']['run'] = true
-
 # This mode specifies the mode under which the Instana agent should run.
 # Possible values are "apm", "infrastructure" and "off".
 # See:: https://instana.atlassian.net/wiki/display/DOCS/Agent+Management#AgentManagement-Agentmode
