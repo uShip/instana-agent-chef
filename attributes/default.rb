@@ -34,7 +34,7 @@ node.default['instana']['agent']['limit']['memory']['maxsize'] = 512 # (MB)
 # required sensors on startup phase.
 # Possible values: "static" | "dynamic".
 # See:: https://instana.atlassian.net/wiki/display/DOCS/The+Manual+Installation+Process
-node.default['instana']['agent']['flavor'] = 'dynamic'
+node.default['instana']['agent']['flavor'] = 'static'
 
 # When you register with us you receive a string that makes the credentials you
 # need in order to download the agent and its sensors. It can be seen as a
