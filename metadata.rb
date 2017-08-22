@@ -2,7 +2,7 @@ name 'instana-agent'
 issues_url 'https://github.com/instana/cookbook/issues'
 source_url 'https://github.com/instana/cookbook'
 maintainer 'INSTANA Inc.'
-maintainer_email 'stefan.staudenmeyer@instana.com'
+maintainer_email 'ops@instana.com'
 license 'Apache-2.0'
 description 'Installs/Configures instana-agent'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
