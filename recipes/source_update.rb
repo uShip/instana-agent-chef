@@ -9,7 +9,7 @@
 
 template "#{node['instana']['agent']['config_dir']}/com.instana.agent.main.config.UpdateManager.cfg" do
   source 'agent_update.erb'
-  mode '0644'
+  mode '0640'
   owner 'root'
   group 'root'
   action :create
@@ -26,7 +26,7 @@ end
 
 template "#{node['instana']['agent']['config_dir']}/com.instana.agent.bootstrap.AgentBootstrap.cfg" do
   source 'agent_bootstrap.erb'
-  mode '0644'
+  mode '0640'
   owner 'root'
   group 'root'
   action :create

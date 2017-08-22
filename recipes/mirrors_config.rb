@@ -9,7 +9,7 @@
 
 template '/opt/instana/agent/etc/mvn-settings.xml' do
   source 'maven_settings.erb'
-  mode '0644'
+  mode '0640'
   owner 'root'
   group 'root'
   variables(

@@ -9,7 +9,7 @@
 
 template '/opt/instana/agent/etc/instana/configuration.yaml' do
   source 'agent_config.erb'
-  mode '0644'
+  mode '0640'
   owner 'root'
   group 'root'
   only_if do

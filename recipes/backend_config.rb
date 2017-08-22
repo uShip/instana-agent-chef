@@ -9,7 +9,7 @@
 
 template "#{node['instana']['agent']['config_dir']}/com.instana.agent.main.sender.Backend.cfg" do
   source 'agent_backend.erb'
-  mode '0644'
+  mode '0640'
   owner 'root'
   group 'root'
   variables(
