@@ -53,4 +53,5 @@ service 'instana-agent' do
   supports status: true, restart: true
   action [:enable, :start]
   subscribes :restart, "execute[systemd-daemon-reload]"
+  subscribes :restart, "template[/opt/instana/agent/etc/mvn-settings.xml]"
 end
