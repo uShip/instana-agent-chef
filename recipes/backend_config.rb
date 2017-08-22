@@ -7,9 +7,7 @@
 # Copyright 2017, INSTANA Inc
 #
 
-config_dir = '/opt/instana/agent/etc/instana/'
-
-template "#{config_dir}com.instana.agent.main.sender.Backend.cfg" do
+template "#{node['instana']['agent']['config_dir']}/com.instana.agent.main.sender.Backend.cfg" do
   source 'agent_backend.erb'
   mode '0644'
   owner 'root'

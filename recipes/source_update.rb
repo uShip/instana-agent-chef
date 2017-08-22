@@ -7,9 +7,7 @@
 # Copyright 2017, INSTANA Inc
 #
 
-config_dir = '/opt/instana/agent/etc/instana/com.instana.agent.'
-
-template "#{config_dir}main.config.UpdateManager.cfg" do
+template "#{node['instana']['agent']['config_dir']}/com.instana.agent.main.config.UpdateManager.cfg" do
   source 'agent_update.erb'
   mode '0644'
   owner 'root'
@@ -26,7 +24,7 @@ template "#{config_dir}main.config.UpdateManager.cfg" do
   end
 end
 
-template "#{config_dir}bootstrap.AgentBootstrap.cfg" do
+template "#{node['instana']['agent']['config_dir']}/com.instana.agent.bootstrap.AgentBootstrap.cfg" do
   source 'agent_bootstrap.erb'
   mode '0644'
   owner 'root'

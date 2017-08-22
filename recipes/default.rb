@@ -7,8 +7,6 @@
 # Copyright 2017, INSTANA Inc
 #
 
-config_dir = '/opt/instana/agent/etc/instana/'
-
 log 'fail if flavor is of unknown type' do
   message <<-EOT
     The flavor attribute for the agent must be either
@@ -24,7 +22,7 @@ include_recipe 'instana-agent::mirrors_config'
 include_recipe 'instana-agent::source_update'
 include_recipe 'instana-agent::agent_config'
 
-file "#{config_dir}com.instana.agent.main.config.Agent.cfg" do
+file "#{node['instana']['agent']['config_dir']}/com.instana.agent.main.config.Agent.cfg" do
   mode '0644'
   owner node['instana']['agent']['user']
   group node['instana']['agent']['group']

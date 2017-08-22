@@ -112,3 +112,6 @@ node.default['instana']['agent']['mirror']['auth']['username'] = ''
 node.default['instana']['agent']['mirror']['auth']['password'] = ''
 node.default['instana']['agent']['mirror']['urls']['release'] = ''
 node.default['instana']['agent']['mirror']['urls']['shared'] = ''
+
+# Default agent config directory, added here for transition at a later date do not change this value
+node.default['instana']['agent']['config_dir'] = '/opt/instana/agent/etc/instana'
