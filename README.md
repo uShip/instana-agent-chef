@@ -26,6 +26,22 @@ See [our official documentation](https://docs.instana.com).
 
 ## License and Authors
 
+Some attributes may be loaded via a chef databag: instana-agent, item: general
+
+Example:
+```
+{
+	"id": "general",
+	"flavor": "static",
+	"key": "your_agent_key",
+	"endpoint_host": "saas-us-west-2.instana.io",
+	"endpoint_port": 443,
+	"mode": "apm",
+	"zone": "production",
+	"tags": ["tag", "another"]
+}
+```
+
 This cookbook is being submitted and maintained under the [Apache v2.0 License](https://github.com/instana/cookbook/blob/master/LICENSE).
 
 * [Zachary Schneider](https://github.com/sigil66 "Zachary Schneider")
