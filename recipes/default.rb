@@ -24,8 +24,8 @@ include_recipe 'instana-agent::agent_config'
 
 file "#{node['instana']['agent']['config_dir']}/com.instana.agent.main.config.Agent.cfg" do
   mode '0640'
-  owner root
-  group root
+  owner 'root'
+  group 'root'
   action :create_if_missing
 end
 
