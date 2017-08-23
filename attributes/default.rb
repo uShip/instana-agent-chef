@@ -41,6 +41,19 @@ node.default['instana']['agent']['endpoint']['port'] = 443
 # See:: https://instana.atlassian.net/wiki/display/DOCS/Agent+Management#AgentManagement-Agentmode
 node.default['instana']['agent']['mode'] = 'apm'
 
+# The agent zone is a visual helper under which hosts are being categorized
+# on the physical map. This, along with the list of host tags, can help filter
+# and search.
+# Possible values: a string containing UTF-8 characters.
+# See:: https://instana.atlassian.net/wiki/display/DOCS/Infrastructure+View
+node.default['instana']['agent']['zone'] = ''
+
+# The agent tags are a list of strings that will categorize the host machine
+# and are. This, along with the list of host tags, can help filter and search.
+# See:: https://instana.atlassian.net/wiki/display/DOCS/Infrastructure+View
+# See:: https://instana.atlassian.net/wiki/display/DOCS/Host
+node.default['instana']['agent']['tags'] = []
+
 # The Instana agent updates its set of sensors automatically in the background
 # unless configured differently.
 # Possible values: true | false.
@@ -62,18 +75,6 @@ node.default['instana']['agent']['update']['time'] = '04:30' # 24h-format
 # Possible values: a string with a git commit hash.
 node.default['instana']['agent']['update']['pin'] = '' # git sha-1 hash
 
-# The agent zone is a visual helper under which hosts are being categorized
-# on the physical map. This, along with the list of host tags, can help filter
-# and search.
-# Possible values: a string containing UTF-8 characters.
-# See:: https://instana.atlassian.net/wiki/display/DOCS/Infrastructure+View
-node.default['instana']['agent']['zone'] = ''
-
-# The agent tags are a list of strings that will categorize the host machine
-# and are. This, along with the list of host tags, can help filter and search.
-# See:: https://instana.atlassian.net/wiki/display/DOCS/Infrastructure+View
-# See:: https://instana.atlassian.net/wiki/display/DOCS/Host
-node.default['instana']['agent']['tags'] = []
 
 # We support running and updating the Instana agent through a proxy setup.
 # See:: https://instana.atlassian.net/wiki/display/DOCS/Agent+Proxy+Setup
