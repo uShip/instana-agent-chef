@@ -76,7 +76,7 @@ template "#{systemd_srv_dir}/10-resources.conf" do
       (node['instana']['agent']['limit']['cpu']['enabled'] ||
         node['instana']['agent']['limit']['memory']['enabled'])
   end
-  notifies :run, "systemd-daemon-reload"
+  notifies :run, "execute[systemd-daemon-reload]"
 end
 
 execute "systemd-daemon-reload" do
