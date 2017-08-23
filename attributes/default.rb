@@ -6,21 +6,6 @@
 # Copyright:: 2017, Instana, Inc.
 # License:: Apache-2.0
 
-# This mode specifies the mode under which the Instana agent should run.
-# Possible values are "apm", "infrastructure" and "off".
-# See:: https://instana.atlassian.net/wiki/display/DOCS/Agent+Management#AgentManagement-Agentmode
-node.default['instana']['agent']['mode'] = 'apm'
-
-# These settings enable you to set hard resource limits for the Instana agent
-# and its runtime underneath via Systemd CGroup settings.
-# Possible values: true | false
-# See:: https://instana.atlassian.net/wiki/display/DOCS/Limiting+Agent%27s+CPU+and+Memory+in+different+environments
-# See:: https://www.freedesktop.org/software/systemd/man/systemd.resource-control.html
-node.default['instana']['agent']['limit']['cpu']['enabled'] = true
-node.default['instana']['agent']['limit']['cpu']['quota'] = 0.5 # ( == 50%)
-node.default['instana']['agent']['limit']['memory']['enabled'] = true
-node.default['instana']['agent']['limit']['memory']['maxsize'] = 512 # (MB)
-
 # We ship our Instana Agent in two flavors: "dynamic" and "static".
 # The static flavored agent comes with a JDK (Zulu OpenJDK in a recent
 # version) and a set of all recent sensors that we ship on a daily basis.
@@ -50,6 +35,11 @@ node.default['instana']['agent']['endpoint']['host'] =
 # number is 1444.
 # See:: https://instana.atlassian.net/wiki/pages/viewpage.action?pageId=1179831
 node.default['instana']['agent']['endpoint']['port'] = 443
+
+# This mode specifies the mode under which the Instana agent should run.
+# Possible values are "apm", "infrastructure" and "off".
+# See:: https://instana.atlassian.net/wiki/display/DOCS/Agent+Management#AgentManagement-Agentmode
+node.default['instana']['agent']['mode'] = 'apm'
 
 # The Instana agent updates its set of sensors automatically in the background
 # unless configured differently.
@@ -108,6 +98,16 @@ node.default['instana']['agent']['mirror']['auth']['username'] = ''
 node.default['instana']['agent']['mirror']['auth']['password'] = ''
 node.default['instana']['agent']['mirror']['urls']['release'] = ''
 node.default['instana']['agent']['mirror']['urls']['shared'] = ''
+
+# These settings enable you to set hard resource limits for the Instana agent
+# and its runtime underneath via Systemd CGroup settings.
+# Possible values: true | false
+# See:: https://instana.atlassian.net/wiki/display/DOCS/Limiting+Agent%27s+CPU+and+Memory+in+different+environments
+# See:: https://www.freedesktop.org/software/systemd/man/systemd.resource-control.html
+node.default['instana']['agent']['limit']['cpu']['enabled'] = true
+node.default['instana']['agent']['limit']['cpu']['quota'] = 0.5 # ( == 50%)
+node.default['instana']['agent']['limit']['memory']['enabled'] = true
+node.default['instana']['agent']['limit']['memory']['maxsize'] = 512 # (MB)
 
 # Default agent config directory, added here for transition at a later date do not change this value
 node.default['instana']['agent']['config_dir'] = '/opt/instana/agent/etc/instana'
