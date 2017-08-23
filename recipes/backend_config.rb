@@ -13,7 +13,7 @@ template "#{node['instana']['agent']['config_dir']}/com.instana.agent.main.sende
   owner 'root'
   group 'root'
   variables(
-    key: node['instana']['agent']['agent_key'],
+    key: node['instana']['agent']['key'],
     host: node['instana']['agent']['endpoint']['host'],
     port: node['instana']['agent']['endpoint']['port'],
     proxy_enabled: node['instana']['agent']['proxy']['enabled'],

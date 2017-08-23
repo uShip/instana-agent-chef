@@ -15,44 +15,44 @@
 # required sensors on startup phase.
 # Possible values: "static" | "dynamic".
 # See:: https://instana.atlassian.net/wiki/display/DOCS/The+Manual+Installation+Process
-node.default['instana']['agent']['flavor'] = 'static'
+node.default['instana']['agent']['flavor'] = instana_data('flavor', 'general') || 'static'
 
 # When you register with us you receive a string that makes the credentials you
 # need in order to download the agent and its sensors. It can be seen as a
 # tenantcy identifier across the platform.
 # See:: https://instana.atlassian.net/wiki/display/DOCS/The+Manual+Installation+Process
-node.default['instana']['agent']['agent_key'] = ''
+node.default['instana']['agent']['key'] = instana_data('key', 'general') || ''
 
 # This is the machine the Instana agent will connect to directly. This will
 # either be one of our SaaS endpoints, or your Instana on premises installation
 # hostname or address.
 # See:: https://instana.atlassian.net/wiki/pages/viewpage.action?pageId=1179831
-node.default['instana']['agent']['endpoint']['host'] =
+node.default['instana']['agent']['endpoint']['host'] = instana_data('endpoint_host', 'general') ||
   'saas-us-west-2.instana.io'
 
 # See node['instana']['agent']['endpoint']['host']. On our SaaS platform, the
 # monitoring endpoint port is 443. For most on premises installations, this
 # number is 1444.
 # See:: https://instana.atlassian.net/wiki/pages/viewpage.action?pageId=1179831
-node.default['instana']['agent']['endpoint']['port'] = 443
+node.default['instana']['agent']['endpoint']['port'] = instana_data('endpoint_port', 'general') || 443
 
 # This mode specifies the mode under which the Instana agent should run.
 # Possible values are "apm", "infrastructure" and "off".
 # See:: https://instana.atlassian.net/wiki/display/DOCS/Agent+Management#AgentManagement-Agentmode
-node.default['instana']['agent']['mode'] = 'apm'
+node.default['instana']['agent']['mode'] = instana_data('mode', 'general') || 'apm'
 
 # The agent zone is a visual helper under which hosts are being categorized
 # on the physical map. This, along with the list of host tags, can help filter
 # and search.
 # Possible values: a string containing UTF-8 characters.
 # See:: https://instana.atlassian.net/wiki/display/DOCS/Infrastructure+View
-node.default['instana']['agent']['zone'] = ''
+node.default['instana']['agent']['zone'] = instana_data('zone', 'general') || ''
 
 # The agent tags are a list of strings that will categorize the host machine
 # and are. This, along with the list of host tags, can help filter and search.
 # See:: https://instana.atlassian.net/wiki/display/DOCS/Infrastructure+View
 # See:: https://instana.atlassian.net/wiki/display/DOCS/Host
-node.default['instana']['agent']['tags'] = []
+node.default['instana']['agent']['tags'] = instana_data('tags', 'general') || []
 
 # The Instana agent updates its set of sensors automatically in the background
 # unless configured differently.

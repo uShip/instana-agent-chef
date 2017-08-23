@@ -12,10 +12,6 @@ template "#{node['instana']['agent']['config_dir']}/configuration.yaml" do
   mode '0640'
   owner 'root'
   group 'root'
-  not_if do
-    node['instana']['agent']['zone'].empty? &&
-      node['instana']['agent']['tags'].empty?
-  end
   variables(
     zone: node['instana']['agent']['zone'],
     tags: node['instana']['agent']['tags']
