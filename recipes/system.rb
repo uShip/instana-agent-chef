@@ -19,7 +19,7 @@ package 'apt-transport-https' do
 end
 
 apt_repository 'Instana-Agent' do
-	repo_name 'Instana-Agent'
+	repo_name 'instana-agent'
 	distribution 'generic'
 	arch 'amd64'
 	key gpg_path
