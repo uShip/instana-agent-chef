@@ -23,8 +23,8 @@
 # Host
 <% if @tags.length > 0 %>
 com.instana.plugin.host:
-  tags:<% @tags.each do |tag| %>
-    - '<%= tag %>'
+	tags:<% @tags.each do |tag| %>
+		- '<%= tag %>'
 <% end %>
 <% end %>
 

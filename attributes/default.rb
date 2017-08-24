@@ -75,7 +75,6 @@ node.default['instana']['agent']['update']['time'] = '04:30' # 24h-format
 # Possible values: a string with a git commit hash.
 node.default['instana']['agent']['update']['pin'] = '' # git sha-1 hash
 
-
 # We support running and updating the Instana agent through a proxy setup.
 # See:: https://instana.atlassian.net/wiki/display/DOCS/Agent+Proxy+Setup
 node.default['instana']['agent']['proxy']['enabled'] = false

@@ -10,6 +10,6 @@ class Instana
 	private
 
 	def self.item_in_data_bag?(databag, item)
-  	Chef::DataBag.list.include?(databag) && data_bag(databag).include?(item)
-  end
+		Chef::DataBag.list.include?(databag) && data_bag(databag).include?(item)
+	end
 end
