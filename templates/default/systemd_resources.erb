@@ -1,0 +1,8 @@
+[Service]
+<% if @limit_cpu %>
+CPUAccounting=true
+CPUQuota=<%= ( @cpu_quota * 100 ) %>%
+<% end %>
+<% if @limit_memory %>MemoryAccounting=true
+MemoryMax=<%= @memory_quota %>M
+<% end %>

@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
-source "https://rubygems.org"
+
+source 'https://rubygems.org'
 
 gem 'chef'
-gem 'chef-zero'
-gem 'test-kitchen'
-gem 'kitchen-ec2'
-gem "kitchen-vagrant"
+gem 'foodcritic'
+gem 'inspec', '= 1.28.1'
+gem 'rubocop'

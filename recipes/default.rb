@@ -1,86 +1,57 @@
 # encoding: utf-8
+
 #
 # Cookbook Name:: instana-agent
 # Recipe:: default
 #
-# Copyright 2016, INSTANA Inc (All rights reserved)
+# Copyright 2017, INSTANA Inc
 #
-
-log 'fail if jdk not set for minimal install' do
-  message <<-EOT
-    When picking the minimal installation method for the Instana Agent,
-    please specify a path to an Oracle- or OpenJDK.
-  EOT
-  level :error
-  only_if do
-    node['instana']['agent']['flavor'] == 'minimal' && node['instana']['agent']['jdk'] == ''
-  end
-end
 
 log 'fail if flavor is of unknown type' do
   message <<-EOT
-    The flavor attribute for the agent must be of either "full" or "minimal" value.
+    The flavor attribute for the agent must be either
+    "dynamic" or "static".
   EOT
   level :error
-  not_if { %w(full minimal).include? node['instana']['agent']['flavor'] }
+  not_if { %w[dynamic static].include? node['instana']['agent']['flavor'] }
 end
 
-http_request 'check agent key for validity before making system changes' do
-  action :get
-  url 'https://packages.instana.io/agent/generic/x86_64/repodata/repomd.xml'
-  headers(Authorization: "Basic #{::Base64.encode64("_:#{node['instana']['agent']['agent_key']}")}")
-end
+include_recipe 'instana-agent::system'
+include_recipe 'instana-agent::backend_config'
+include_recipe 'instana-agent::mirrors_config'
+include_recipe 'instana-agent::source_update'
+include_recipe 'instana-agent::agent_config'
 
-apt_repository 'Instana-Agent' do
-  repo_name 'Instana-Agent'
-  distribution 'generic'
-  arch 'amd64'
-  key 'https://packages.instana.io/Instana.gpg'
-  uri "https://_:#{node['instana']['agent']['agent_key']}@packages.instana.io/agent"
-  components ['main']
-  action :add
-  only_if { node['platform_family'] == 'debian' }
-end
-
-yum_repository 'Instana-Agent' do
-  description 'The Agent repository by Instana, Inc.'
-  baseurl "https://_:#{node['instana']['agent']['agent_key']}@packages.instana.io/agent/generic/x86_64"
-  gpgkey 'https://packages.instana.io/Instana.gpg'
-  repo_gpgcheck true
-  gpgcheck false
-  action [:create, :makecache]
-  only_if { %w(suse rhel).include? node['platform_family'] }
-end
-
-package 'instana-agent' do
-  package_name "instana-agent-#{node['instana']['agent']['flavor']}"
-  action :upgrade
-end
-
-template '/opt/instana/agent/etc/instana/com.instana.agent.main.sender.Backend.cfg' do
-  source 'agent-backend.erb'
+file "#{node['instana']['agent']['config_dir']}/com.instana.agent.main.config.Agent.cfg" do
   mode '0640'
   owner 'root'
   group 'root'
-  variables({
-    key: node['instana']['agent']['agent_key'],
-    host: node['instana']['agent']['endpoint']['host'],
-    port: node['instana']['agent']['endpoint']['port']
-  })
+  action :create_if_missing
 end
 
-template '/opt/instana/agent/etc/instana/com.instana.agent.main.config.UpdateManager.cfg' do
-  source 'agent-update.erb'
-  mode '0640'
-  owner 'root'
-  group 'root'
-  variables({
-    interval: node['instana']['agent']['update']['interval'],
-    enabled: (node['instana']['agent']['update']['enabled'] ? 'AUTO' : 'OFF'),
-    time: node['instana']['agent']['update']['time']
-  })
+# TODO revisit this
+ruby_block 'set the agent mode (default APM)' do
+  block do
+    case node['instana']['agent']['mode']
+    when 'INFRASTRUCTURE', 'infrastructure', 'infra'
+      value = 'INFRASTRUCTURE'
+    when 'off', 'OFF', false
+      value = 'OFF'
+    else
+      value = 'APM'
+    end
+    line = "mode = #{value}"
+    path = "#{node['instana']['agent']['config_dir']}/com.instana.agent.main.config.Agent.cfg"
+    file = Chef::Util::FileEdit.new(path)
+    file.search_file_replace_line(/^mode =.*/, line)
+    file.insert_line_if_no_match(/^mode =.*/, line)
+    file.write_file
+  end
 end
 
 service 'instana-agent' do
+  supports status: true, restart: true
   action [:enable, :start]
+  subscribes :restart, "execute[systemd-daemon-reload]"
+  subscribes :restart, "template[/opt/instana/agent/etc/mvn-settings.xml]"
 end

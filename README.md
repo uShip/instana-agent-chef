@@ -1,51 +1,50 @@
 # instana-agent Cookbook
 
-    This cookbook installs the agent for the Instana, Inc.(tm) monitoring suite.
-
-## Requirements
-
-* [Oracle Java](https://www.oracle.com/java/index.html) JDK >= 8.
-
-    Even though the Instana agent might run under different environments (e.g.
-    [icedtea](http://icedtea.classpath.org/wiki/Main_Page)), we do not support such environments.
+This [Chef](https://chef.io) cookbook installs, configures and runs the monitoring agent for the [Instana monitoring suite](https://www.instana.com).
 
 ## Flavors
 
-**`instana-agent-full`** 
+**`instana-agent-dynamic`**
 
-    It comes with a prebundled JDK. Also it includes the latest version of all the sensors in
-    their latest version so that firewalls in tight onprem networks do not have to pull them
-    the first time the agent starts.
+This blank agent comes bundled with a JDK and is configured to download all neccessary sensors when it starts. Additionally, it is configured to update its set of sensors on a daily basis.
 
-**`instana-agent-minimal`**
+**`instana-agent-static`**
 
-    It comes with neither the JDK nor sensors bundled. Upon startup, it connects to our agent 
-    artifact repository to download all the sensors. If you use this one, a `JAVA_HOME` path 
-    needs to be specified.
+This "gated" agent package is supposed to not connect to the internet at all. It comes with all the recent sensors and a JDK, and is your package of choice when you run a tight firewall setup.
 
 ## Monitoring endpoint
 
-    If you're an onprem customer, please specify your hostname and port in the corresponding
-    attributes. If you're using our SaaS offering, and don't know which endpoint the agent 
-    should send to, feel free to ask our sales team.
+If you're an onprem customer, please specify your hostname and port in the corresponding attributes. If you're using our SaaS offering, and don't know which endpoint the agent should send to, feel free to ask our sales team.
+
+## Supported operating systems
+
+See [our official documentation](https://docs.instana.com).
 
 ## Attributes
 
-* **(Required)** `node['instana']['agent']['flavor']` = (string) Either "minimal" or "full"
-* **(Required)** `node['instana']['agent']['agentKey']` = (string) Your tenancy agent key
-* **(Required)** `node['instana']['agent']['endpoint']['host']` = (string) Instana - backend monitoring endpoint - hostname
-* **(Required)** `node['instana']['agent']['endpoint']['port']` = (string) Instana - backend monitoring endpoint - port
-
-* **(Optional)** `node['instana']['agent']['update']['enabled']` = (bool) If auto-updates should be enabled
-* **(Optional)** `node['instana']['agent']['update']['time']` = (string) Time in hh:ss when to launch auto-updates
-* **(Optional)** `node['instana']['agent']['update']['interval']` = (array) Interval of auto-updates (see agent-update template for values)
-
-* **(Optional)** `node['instana']['agent']['hostTags']` = (array) List of host-tag strings 
-* **(Optional)** `node['instana']['agent']['jdk']` = (minimal bundle) Path of your JDK install 
+* See [attributes file](https://github.com/instana/cookbook/blob/master/attributes/default.rb).
 
 ## License and Authors
 
-* [Stefan Staudenmeyer](mailto:stefan.staudenmeyer@instana.com "Stefan Staudenmeyer")
+Some attributes may be loaded via a chef databag: instana-agent, item: general
 
+Example:
+```
+{
+	"id": "general",
+	"flavor": "static",
+	"key": "your_agent_key",
+	"endpoint_host": "saas-us-west-2.instana.io",
+	"endpoint_port": 443,
+	"mode": "apm",
+	"zone": "production",
+	"tags": ["tag", "another"]
+}
+```
 
-Copyright 2016, INSTANA Inc (All rights reserved)
+This cookbook is being submitted and maintained under the [Apache v2.0 License](https://github.com/instana/cookbook/blob/master/LICENSE).
+
+* [Zachary Schneider](https://github.com/sigil66 "Zachary Schneider")
+* [Stefan Staudenmeyer](https://github.com/doerteDev "Stefan Staudenmeyer")
+
+Copyright 2017, INSTANA Inc.
