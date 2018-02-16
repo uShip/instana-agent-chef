@@ -13,6 +13,7 @@ template '/opt/instana/agent/etc/mvn-settings.xml' do
 	owner 'root'
 	group 'root'
 	variables(
+		key: node['instana']['agent']['key'],
 		proxy_enabled: node['instana']['agent']['proxy']['enabled'],
 		proxy_type: node['instana']['agent']['proxy']['type'],
 		proxy_host: node['instana']['agent']['proxy']['host'],
@@ -26,8 +27,4 @@ template '/opt/instana/agent/etc/mvn-settings.xml' do
 		release_repourl: node['instana']['agent']['mirror']['urls']['release'],
 		shared_repourl: node['instana']['agent']['mirror']['urls']['shared']
 	)
-	only_if do
-		node['instana']['agent']['proxy']['enabled'] ||
-			node['instana']['agent']['mirror']['enabled']
-	end
 end
