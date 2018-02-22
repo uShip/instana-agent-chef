@@ -28,3 +28,10 @@ template '/opt/instana/agent/etc/mvn-settings.xml' do
 		shared_repourl: node['instana']['agent']['mirror']['urls']['shared']
 	)
 end
+
+template '/opt/instana/agent/etc/org.ops4j.pax.url.mvn.cfg' do
+	source 'pax_maven_cfg.erb'
+	mode '0640'
+	owner 'root'
+	group 'root'
+end

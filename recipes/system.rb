@@ -29,6 +29,11 @@ apt_repository 'Instana-Agent' do
 	only_if { node['platform_family'] == 'debian' }
 end
 
+apt_update 'instana-agent' do
+	action :update 
+	only_if { node['platform_family'] == 'debian' }
+end
+
 yum_repository 'Instana-Agent' do
 	description 'The Agent repository by Instana, Inc.'
 	baseurl "#{domain}/agent/generic/x86_64"
