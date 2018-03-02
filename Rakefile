@@ -5,4 +5,4 @@ require 'foodcritic'
 FoodCritic::Rake::LintTask.new
 RSpec::Core::RakeTask.new(:rspec)
 
-task default: %i[rubocop foodcritic]
+task default: %i[foodcritic]
