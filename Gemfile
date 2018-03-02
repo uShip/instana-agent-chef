@@ -3,6 +3,7 @@
 source 'https://rubygems.org'
 
 gem 'chef'
-gem 'foodcritic'
 gem 'rubocop'
-gem 'rake-foodcritic'
+gem 'rake'
+gem 'foodcritic'
+gem 'rspec'
