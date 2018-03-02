@@ -1,7 +1,10 @@
 deploy:
   provider: chef-supermarket
   user_id: instana
-  cookbook_category: "Others"
+  cookbook_category: Others
   on:
     tags: true
     all_branches: true
+before_install:
+- openssl aes-256-cbc -K $encrypted_a7970e98d94f_key -iv $encrypted_a7970e98d94f_iv
+  -in instana.pem.enc -out instana.pem -d

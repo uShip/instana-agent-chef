@@ -4,3 +4,4 @@ Gemfile.lock
 .idea/
 .kitchen.local.yml
 test/integration/attributes/*yml
+instana.pem
