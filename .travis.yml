@@ -2,3 +2,6 @@ deploy:
   provider: chef-supermarket
   user_id: instana
   cookbook_category: "Others"
+  on:
+    tags: true
+    all_branches: true
