@@ -1,6 +1,4 @@
 name 'instana-agent'
-issues_url 'https://github.com/instana/instana-agent-cookbook/issues'
-source_url 'https://github.com/instana/instana-agent-cookbook'
 maintainer 'Instana Inc.'
 maintainer_email 'ops@instana.com'
 license 'Apache-2.0'
