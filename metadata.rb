@@ -3,8 +3,11 @@ maintainer 'Instana Inc.'
 maintainer_email 'ops@instana.com'
 license 'Apache-2.0'
 description 'Installs/Configures instana-agent'
-long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
+long_description long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '0.0.12'
+source_url 'https://github.com/instana/instana-agent' if defined?(source_url)
+issues_url 'https://github.com/instana/instana-agent/issues' if defined?(issues_url)
+chef_version '>= 12.20.3'
 
 provides 'instana-agent::backend_config'
 provides 'instana-agent::default'
