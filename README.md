@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/instana/instana-agent-cookbook.svg?branch=master)](https://travis-ci.org/instana/instana-agent-cookbook)
+[![Build Status](https://travis-ci.org/instana/instana-agent.svg?branch=master)](https://travis-ci.org/instana/instana-agent)
 
 # instana-agent Cookbook
 
