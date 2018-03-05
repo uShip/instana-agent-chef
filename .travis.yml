@@ -6,7 +6,7 @@ deploy:
   edge: true
   user_id: instana
   client_key: "instana.pem"
-  cookbook_category: Others
+  cookbook_category: Monitoring & Trending
   skip_cleanup: true
   on:
     tags: true
