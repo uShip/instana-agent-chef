@@ -1,7 +1,9 @@
 deploy:
   provider: chef-supermarket
   user_id: instana
+  client_key: "instana.pem"
   cookbook_category: Others
+  skip_cleanup: true
   on:
     tags: true
     all_branches: true
