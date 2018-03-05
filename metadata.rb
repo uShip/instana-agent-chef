@@ -4,7 +4,9 @@ maintainer_email 'ops@instana.com'
 license 'Apache-2.0'
 description 'Installs/Configures instana-agent'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '0.0.7'
+version '0.0.8'
+source_url 'https://github.com/instana/instana-agent-cookbook' if defined?(source_url)
+issues_url 'https://github.com/instana/instana-agent-cookbook/issues' if defined?(issues_url)
 
 provides 'instana-agent::backend_config'
 provides 'instana-agent::default'
