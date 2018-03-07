@@ -47,13 +47,15 @@ This cookbook is being submitted and maintained under the [Apache v2.0 License](
 * [Zachary Schneider](https://github.com/sigil66 "Zachary Schneider")
 * [Stefan Staudenmeyer](https://github.com/doerteDev "Stefan Staudenmeyer")
 
-# Publish to the Chef Supermarket with Travis CI
+# Publish to Chef Supermarket
 
 * Update the version number in the module’s metadata.rb file and commit the change to the module repository.
-* Tag the module repo with the desired version number.
-* Push the commit and tag to your Git repository.
+* Update CHANGELOG.md
 
-Travis CI will build and publish the module.
-
+```
+bundle install --binstubs
+stove login --username instana --key ~/.ssh/instana.pem
+bin/stove
+```
 
 Copyright 2017, INSTANA Inc.
