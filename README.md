@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/instana/instana-agent.svg?branch=master)](https://travis-ci.org/instana/instana-agent)
-
 # instana-agent Cookbook
 
 This [Chef](https://chef.io) cookbook installs, configures and runs the monitoring agent for the [Instana monitoring suite](https://www.instana.com).
