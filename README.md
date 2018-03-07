@@ -49,8 +49,9 @@ This cookbook is being submitted and maintained under the [Apache v2.0 License](
 
 # Publish to Chef Supermarket
 
-* Update the version number in the module’s metadata.rb file and commit the change to the module repository.
+* Update the version number in the module’s metadata.rb file
 * Update CHANGELOG.md
+* Push changes to the module repository
 
 ```
 bundle install --binstubs
