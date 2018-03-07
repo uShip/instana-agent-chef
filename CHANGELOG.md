@@ -3,7 +3,7 @@
 This file is used to list changes made in each version of the instana-agent
 cookbook.
 
-## 1.0.4
+## 1.0.5
 - Release to chef supermarket using stove
 
 ## 1.0.3
