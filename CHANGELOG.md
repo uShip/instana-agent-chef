@@ -3,6 +3,9 @@
 This file is used to list changes made in each version of the instana-agent
 cookbook.
 
+## 1.0.4
+- Release to chef supermarket using stove
+
 ## 1.0.3
 - Fix configuration.yaml parse error
 
