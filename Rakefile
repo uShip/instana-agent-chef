@@ -4,6 +4,6 @@ require 'stove/rake_task'
 
 FoodCritic::Rake::LintTask.new
 RSpec::Core::RakeTask.new(:rspec)
-Stove::RakeTask.new
+Stove::RakeTask.new(:deploy)
 
 task default: %i[foodcritic]
