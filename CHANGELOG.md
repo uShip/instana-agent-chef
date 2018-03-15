@@ -3,6 +3,9 @@
 This file is used to list changes made in each version of the instana-agent
 cookbook.
 
+## 1.0.11
+- Release to chef supermarket using stove via Jenkins
+
 ## 1.0.6
 - Release to chef supermarket using stove
 
