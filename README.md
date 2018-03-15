@@ -52,11 +52,6 @@ This cookbook is being submitted and maintained under the [Apache v2.0 License](
 * Update the version number in the module’s metadata.rb file
 * Update CHANGELOG.md
 * Push changes to the module repository
-
-```
-bundle install --binstubs
-stove login --username instana --key ~/.ssh/instana.pem
-bin/stove
-```
+* Trigger Jenkins Job
 
 Copyright 2017, INSTANA Inc.
