@@ -10,9 +10,6 @@ action :install do
 	domain = "https://_:#{new_resource.key}@packages.instana.io"
 
 	if node['platform'] == 'windows'
-		# The java_se attributes should be set in the cookbook that is using this resource
-		include_recipe 'java_se'
-
 		reboot 'powershell' do
 			action :nothing
 		end
