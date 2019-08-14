@@ -12,6 +12,29 @@ This blank agent comes bundled with a JDK and is configured to download all necc
 
 This "gated" agent package is supposed to not connect to the internet at all. It comes with all the recent sensors and a JDK, and is your package of choice when you run a tight firewall setup.
 
+## Resources
+
+**`instana_agent`**
+
+Use this resource to install and set up Instana on your infrastructure. It has the following properties:
+
+```ruby
+property :flavor, String, name_property: true
+property :key, String, required: true
+```
+
+Assuming you've set the `default['instana']['agent']['key']` attribute, you can use the resource in your recipe like so:
+
+```ruby
+instana_agent 'static' do
+  key node['instana']['agent']['key']
+end
+```
+
+## Dependencies
+
+The Windows support has a dependency on version 8 of the [java_se cookbook](https://github.com/vrivellino/chef-java_se). You'll need to set the attributes per the instructions for that cookbook.
+
 ## Monitoring endpoint
 
 If you're an onprem customer, please specify your hostname and port in the corresponding attributes. If you're using our SaaS offering, and don't know which endpoint the agent should send to, feel free to ask our sales team.
@@ -24,23 +47,11 @@ See [our official documentation](https://docs.instana.com).
 
 * See [attributes file](https://github.com/instana/cookbook/blob/master/attributes/default.rb).
 
+## Testing
+
+You can test this cookbook by using the "test" cookbook in the `test/cookbooks` directory. That has a dependency on the instana-agent cookbook. It is set up to use [Test Kitchen](https://docs.chef.io/kitchen.html) with [Policyfiles](https://docs.chef.io/policyfile.html). There's an example `kitchen.yml` and `Policyfile.rb` that you'll need to modify to test. If you want to test on Amazon EC2, modify the `kitchen.ec2.yml` file.
+
 ## License and Authors
-
-Some attributes may be loaded via a chef databag: instana-agent, item: general
-
-Example:
-```
-{
-	"id": "general",
-	"flavor": "static",
-	"key": "your_agent_key",
-	"endpoint_host": "saas-us-west-2.instana.io",
-	"endpoint_port": 443,
-	"mode": "apm",
-	"zone": "production",
-	"tags": ["tag", "another"]
-}
-```
 
 This cookbook is being submitted and maintained under the [Apache v2.0 License](https://github.com/instana/cookbook/blob/master/LICENSE).
 
