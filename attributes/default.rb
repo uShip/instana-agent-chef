@@ -109,3 +109,10 @@ default['instana']['agent']['limit']['memory']['maxsize'] = 512 # (MB)
 
 # Default agent config directory, added here for transition at a later date do not change this value
 default['instana']['agent']['config_dir'] = '/opt/instana/agent/etc/instana'
+
+default['instana']['agent']['base_url'] = 'artifact-public.instana.io/artifactory/shared/com/instana/agent-assembly-offline/1.0.0-SNAPSHOT'
+# Default location to install Instana
+default['instana']['agent']['windows']['dir'] = 'C:/ProgramData/Instana'
+
+default['instana']['agent']['windows']['build_date'] = '20190812'
+default['instana']['agent']['windows']['build_number'] = '065352-4002'

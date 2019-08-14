@@ -1,0 +1,17 @@
+<service>
+  <id>instana-agent</id>
+  <name>Instana Agent</name>
+  <description>Instana Agent</description>
+  <!-- start -->
+  <executable>"<%= @instana_agent_dir %>\bin\karaf.bat"</executable>
+  <startargument>daemon</startargument>
+  <!-- stop -->
+  <stopexecutable>"<%= @instana_agent_dir %>\bin\karaf.bat"</stopexecutable>
+  <stopargument>stop</stopargument>
+  <stoptimeout>10sec</stoptimeout>
+  <!-- logging -->
+  <logpath><%= @instana_agent_dir %>\data\log</logpath>
+  <log mode="roll-by-time">
+    <pattern>yyyyMMdd</pattern>
+  </log>
+</service>
