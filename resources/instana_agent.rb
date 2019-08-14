@@ -10,6 +10,8 @@ action :install do
 	domain = "https://_:#{new_resource.key}@packages.instana.io"
 
 	if node['platform'] == 'windows'
+		include_recipe 'java_se'
+
 		reboot 'powershell' do
 			action :nothing
 		end
@@ -22,11 +24,10 @@ action :install do
 			notifies :reboot_now, 'reboot[powershell]', :immediately
 		end
 
-		agent_key = node['instana']['agent']['key']
 		base_url = node['instana']['agent']['base_url']
 		base_artifact_name = 'agent-assembly-offline-1.0.0-'
 		artifact_name = "#{base_artifact_name}#{node['instana']['agent']['windows']['build_date']}.#{node['instana']['agent']['windows']['build_number']}-windows-64bit-offline.zip"
-		archive_url = "https://_:#{agent_key}@#{base_url}/#{artifact_name}"
+		archive_url = "https://_:#{new_resource.key}@#{base_url}/#{artifact_name}"
 
 		remote_file "#{Chef::Config['file_cache_path']}\\instana_agent.zip" do
 			source archive_url
