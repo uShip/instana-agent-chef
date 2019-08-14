@@ -1,6 +1,6 @@
 resource_name :instana_agent
 property :flavor, String, name_property: true
-property :key, String, required: true
+property :key, String, required: true, sensitive: true
 
 action :install do
 	include_recipe 'zypper::default' if node['platform_family'] == 'suse'
@@ -48,7 +48,10 @@ action :install do
 		template "#{windows_config_dir}\\com.instana.agent.main.sender.Backend.cfg" do
 			source 'agent_backend.erb'
 			cookbook 'instana-agent'
-			variables(config_vars)
+			sensitive true
+			variables(
+				config_vars.merge key: new_resource.key
+			)
 		end
 
 		# This is the service wrapper file that was downloaded from https://github.com/kohsuke/winsw per
@@ -160,7 +163,10 @@ action :install do
 			mode '0640'
 			owner 'root'
 			group 'root'
-			variables(config_vars)
+			sensitive true
+			variables(
+				config_vars.merge key: new_resource.key
+			)
 		end
 
 		template '/opt/instana/agent/etc/mvn-settings.xml' do
@@ -169,7 +175,10 @@ action :install do
 			mode '0640'
 			owner 'root'
 			group 'root'
-			variables(config_vars)
+			sensitive true
+			variables(
+				config_vars.merge key: new_resource.key
+			)
 		end
 
 		template '/opt/instana/agent/etc/org.ops4j.pax.url.mvn.cfg' do
@@ -253,7 +262,6 @@ end
 
 def config_vars
 	_ = {
-		key: node['instana']['agent']['key'],
 		host: node['instana']['agent']['endpoint']['host'],
 		port: node['instana']['agent']['endpoint']['port'],
 		proxy_enabled: node['instana']['agent']['proxy']['enabled'],
