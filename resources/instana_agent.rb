@@ -70,12 +70,10 @@ action :install do
     powershell_script 'install_instana' do
       code '.\instana-agent.exe install'
       cwd node['instana']['agent']['windows']['dir']
-      not_if 'Get-Service -name "Instana Agent"'
     end
 
     powershell_script 'run_instana' do
       code 'Start-Service -displayName "Instana Agent"'
-      # not_if 'Get-Service -name "Instana Agent" | Where-Object {$_.Status -eq "Running"}'
     end
   else
     if node['platform_family'] == 'debian'
