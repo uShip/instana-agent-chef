@@ -56,7 +56,13 @@ end
 
 ## Dependencies
 
+### Java
+
 The Windows support has a dependency on version 8 of the [java_se cookbook](https://github.com/vrivellino/chef-java_se). You'll need to set the attributes per the instructions for that cookbook.
+
+### Powershell 5.1
+
+#### * Note that if your version of Windows does not have Powershell 5.1 installed, this cookbook will install that and reboot the system
 
 ## Monitoring endpoint
 

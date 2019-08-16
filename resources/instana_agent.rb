@@ -21,7 +21,8 @@ action :install do
       source 'https://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win8.1AndW2K12R2-KB3191564-x64.msu'
       checksum 'a8d788fa31b02a999cc676fb546fc782e86c2a0acd837976122a1891ceee42c0'
       action :install
-      notifies :reboot_now, 'reboot[powershell]', :immediately
+			notifies :reboot_now, 'reboot[powershell]', :immediately
+			not_if { ::Powershell::VersionHelper.powershell_version?('5.1') }
     end
 
     base_url = node['instana']['agent']['base_url']
