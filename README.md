@@ -31,6 +31,29 @@ instana_agent 'static' do
 end
 ```
 
+Additionally, if you have different keys per environment, you can store those in Chef Vault or Encrypted Data Bags and switch on the Chef environment or policy group:
+
+```json
+# Example "instana-agent" data bag
+{
+  "id": "general",
+  "flavor": "static",
+  "endpoint": "saas-us-west-2.instana.io",
+  "local_key": "superlongamazinglocalkey",
+  "dev_key": "superlongamazingdevkey",
+  "production_key": "superlongamazingproductionkey"
+}
+```
+
+```ruby
+# Pull the Instana credentials from the instana-agent encrypted data bag
+instana_creds = data_bag_item('instana-agent', 'general')
+
+instana_agent instana_creds['flavor'] do
+  key instana_creds["#{node.policy_group}_key"]
+end
+```
+
 ## Dependencies
 
 The Windows support has a dependency on version 8 of the [java_se cookbook](https://github.com/vrivellino/chef-java_se). You'll need to set the attributes per the instructions for that cookbook.
@@ -58,7 +81,7 @@ This cookbook is being submitted and maintained under the [Apache v2.0 License](
 * [Zachary Schneider](https://github.com/sigil66 "Zachary Schneider")
 * [Stefan Staudenmeyer](https://github.com/doerteDev "Stefan Staudenmeyer")
 
-# Publish to Chef Supermarket
+## Publish to Chef Supermarket
 
 * Update the version number in the module’s metadata.rb file
 * Update CHANGELOG.md
