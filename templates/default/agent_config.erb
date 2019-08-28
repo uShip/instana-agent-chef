@@ -3,12 +3,10 @@
 # The commented out example values represent example configuration and are not
 # necessarily defaults. Defaults are usually 'absent' or mentioned separately.
 # Changes are hot reloaded unless otherwise mentioned.
-
 # It is possible to create files called 'configuration-abc.yaml' which are
 # merged with this file in file system order. So 'configuration-cde.yaml' comes
 # after 'configuration-abc.yaml'. Only nested structures are merged, values are
 # overwritten by subsequent configurations.
-
 # Secrets
 # To filter sensitive data from collection by the agent, all sensors respect
 # the following secrets configuration. If a key collected by a sensor matches
@@ -19,27 +17,23 @@
 #    - 'key'
 #    - 'password'
 #    - 'secret'
-
 # Host
 <% if @tags.length > 0 %>
-com.instana.plugin.host:
+  com.instana.plugin.host:
   tags:<% @tags.each do |tag| %>
     - '<%= tag %>'
+  <% end %>
 <% end %>
-<% end %>
-
 # Hardware & Zone
 <% if @zone.length > 0 %>
-com.instana.plugin.generic.hardware:
+  com.instana.plugin.generic.hardware:
   availability-zone: '<%= @zone %>'
   enabled: true # disabled by default
 <% end %>
-
 # Apache Httpd
 #com.instana.plugin.httpd:
 #  user: ''
 #  password: ''
-
 # Custom processes
 # To enable low level metric and availability monitoring for not automatically
 # discovered processes, uncomment the com.instana.plugin.process section and
@@ -53,39 +47,32 @@ com.instana.plugin.generic.hardware:
 #    - 'slapd'
 #  arguments:
 #    - '/opt/script.sh'
-
 # Memcached
 #com.instana.plugin.memcached:
 #  user: ''
 #  password: ''
-
 # MongoDB
 #com.instana.plugin.mongodb:
 #  user: ''
 #  source: '' # database where the user is defined
 #  password: ''
-
 # Mssql
 #com.instana.plugin.mssql:
 #  user: ''
 #  password: ''
-
 # Mysql
 #com.instana.plugin.mysql:
 #  user: ''
 #  password: ''
-
 # MariaDB
 #com.instana.plugin.mariadb:
 #  user: ''
 #  password: ''
-
 # PostgreSQL
 #com.instana.plugin.postgresql:
 #  user: ''
 #  password: ''
 #  database: '' # by default PostgreSQL will use 'user' as database to connect to.
-
 # Redis
 #com.instana.plugin.redis:
 #  password: ''
@@ -97,7 +84,6 @@ com.instana.plugin.generic.hardware:
 #    - db: 0 # db number - defaults to 0 if absent
 #      key: 'logstash' # key of value, given as string
 #      type: 'list-length' # metric type. Currently only supports 'list-length'
-
 # RabbitMq
 #com.instana.plugin.rabbitmq:
 #  user: 'guest'
@@ -105,13 +91,11 @@ com.instana.plugin.generic.hardware:
 #  monitorQueues:
 #    - queue: queueName #name of the queue
 #      vhost: / #name of the vhost, default is '/'
-
 # OracleDB
 #com.instana.plugin.oracledb:
 #  password: ''
 #  user: '' #default is 'sys as sysdba'
 #  port: '' #default '1521'
-
 # StatsD
 #com.instana.plugin.statsd:
 #  enabled: true # disabled by default
@@ -119,7 +103,6 @@ com.instana.plugin.generic.hardware:
 #    udp: 8125
 #    mgmt: 8126
 #  flush-interval: 10 # 10 seconds by default
-
 # Java & Custom JMX
 #com.instana.plugin.java:
 #  jmx:
@@ -134,7 +117,6 @@ com.instana.plugin.generic.hardware:
 #      metrics:
 #        - attributes: 'LoadedClassCount'
 #          type: 'absolute' # absolute will report the value as-is
-
 # Java Tracing
 #com.instana.plugin.javatrace:
 #  instrumentation:
@@ -155,7 +137,6 @@ com.instana.plugin.generic.hardware:
 #      packages:
 #        - 'com.instana.backend'
 #        - 'com.instana.frontend'
-
 # PHP Tracing
 #com.instana.plugin.php:
 #  # Lightweight PHP Tracing. Requires the Instana Tracing extension. Enabled by default.
@@ -166,7 +147,6 @@ com.instana.plugin.generic.hardware:
 #    # tracing again will not remove the extension. It will only disable the
 #    # tracing sensor.
 #    enabled: true
-
 ## Sap HANA
 #com.instana.plugin.saphana:
 #  singleContainer:

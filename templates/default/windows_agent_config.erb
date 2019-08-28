@@ -1,0 +1,435 @@
+# Manual a-priori configuration. Configuration will be only used when the sensor
+# is actually installed by the agent.
+# The commented out example values represent example configuration and are not
+# necessarily defaults. Defaults are usually 'absent' or mentioned separately.
+# Changes are hot reloaded unless otherwise mentioned.
+# It is possible to create files called 'configuration-abc.yaml' which are
+# merged with this file in file system order. So 'configuration-cde.yaml' comes
+# after 'configuration-abc.yaml'. Only nested structures are merged, values are
+# overwritten by subsequent configurations.
+# Secrets
+# To filter sensitive data from collection by the agent, all sensors respect
+# the following secrets configuration. If a key collected by a sensor matches
+# an entry from the list, the value is redacted.
+#com.instana.secrets:
+#  matcher: 'contains-ignore-case' # 'contains-ignore-case', 'contains', 'regex'
+#  list:
+#    - 'key'
+#    - 'password'
+#    - 'secret'
+# Ignore processes
+# To ignore any monitoring of certain processes, uncomment the
+# com.instana.ignore section and list all process names of processes that should
+# not be monitored.
+# Sometimes scripts or other jobs are started through the same command, but
+# only the execution of a single command should be ignored. In this case use
+# arguments to specify any argument that should cause a process to be ignored.
+#com.instana.ignore:
+#  processes:
+#    - 'java'
+#    - 'httpd'
+#  arguments:
+#    - '-batch-file=/tmp/batch.def'
+# Host
+# Instana will by default only monitor local filesystems. It is possible to
+# explicitly list the remote filesystems that shall be monitored.
+# The name for the config setting is the device name, that is the first column
+# in mtab / df
+<% if @tags.length > 0 %>
+  com.instana.plugin.host:
+    tags:<% @tags.each do |tag| %>
+      - '<%= tag %>'
+  <% end %>
+<% end %>
+# Hardware & Zone
+<% if @zone.length > 0 %>
+  com.instana.plugin.generic.hardware:
+    availability-zone: '<%= @zone %>'
+      enabled: true # disabled by default
+<% end %>
+# AWS Services
+# Monitoring of all AWS Service are enabled by default except for AWS XRay.
+# Default values for cloudwatch_period are in seconds and equal to AWS defaults
+# Values for include_tags/exclude_tags are comma separated list of tags in key:value format (example: env:dev,env:test)
+#com.instana.plugin.aws:
+#  tagged-services-poll-rate: 300
+#  include_tags:
+#  exclude_tags:
+#com.instana.plugin.aws.beanstalk:
+#  enabled: false
+#  cloudwatch_period: 60
+#  include_tags:
+#  exclude_tags:
+#com.instana.plugin.aws.dynamodb:
+#  enabled: false
+#  cloudwatch_period: 300
+#  include_tags:
+#  exclude_tags:
+#com.instana.plugin.aws.ebs:
+#  enabled: false
+#  cloudwatch_period: 300
+#  include_tags:
+#  exclude_tags:
+#com.instana.plugin.aws.ec:
+#  enabled: false
+#  cloudwatch_period: 60
+#  include_tags:
+#  exclude_tags:
+#com.instana.plugin.aws.ec2:
+#  enabled: false
+#  tags-poll-rate: 30
+#com.instana.plugin.aws.elb:
+#  enabled: false
+#  cloudwatch_period: 60
+#  include_tags:
+#  exclude_tags:
+#com.instana.plugin.aws.emr:
+#  enabled: false
+#  cloudwatch_period: 300
+#  include_tags:
+#  exclude_tags:
+#com.instana.plugin.aws.es:
+#  enabled: false
+#  cloudwatch_period: 300
+#  include_tags:
+#  exclude_tags:
+#com.instana.plugin.aws.kinesis:
+#  enabled: false
+#  cloudwatch_period: 300
+#  include_tags:
+#  exclude_tags:
+#com.instana.plugin.aws.lambda:
+#  enabled: false
+#  cloudwatch_period: 300
+#  include_tags:
+#  exclude_tags:
+#com.instana.plugin.aws.rds:
+#  enabled: false
+#  cloudwatch_period: 60
+#  include_tags:
+#  exclude_tags:
+#com.instana.plugin.aws.s3:
+#  enabled: false
+#  cloudwatch_period: 60
+#  include_tags:
+#  exclude_tags:
+#com.instana.plugin.aws.sqs:
+#  enabled: false
+#  cloudwatch_period: 300
+#  include_tags:
+#  exclude_tags:
+#com.instana.plugin.aws.xray:
+#  enabled: false
+# ActiveMQ
+#com.instana.plugin.activemq:
+#  monitorQueues: # max 100 queues
+#    - 'DLQ.test-1'
+#    - 'test-queue-1'
+#    - 'ActiveMQ.DLQ'
+#  monitorTopics: #max 100 topics
+#    - 'ActiveMQ.Advisory.Topic'
+#    - 'test-topic-1'
+# ActiveMQ Artemis
+#com.instana.plugin.activemqartemis:
+#  monitorQueues: # max 100 queues
+#    - 'test-1'
+#    - 'test-queue-1'
+#    - 'DLQ'
+# Apache Httpd
+#com.instana.plugin.httpd:
+#  user: ''
+#  password: ''
+# Couchbase
+#com.instana.plugin.couchbase:
+#  user: ''
+#  password: ''
+# Custom processes
+# To enable low level metric and availability monitoring for not automatically
+# discovered processes, uncomment the com.instana.plugin.process section and
+# list all process names of processes that should be monitored.
+# Sometimes scripts or other jobs are started through the same command, but
+# only the execution of a single command should be monitored. In this case use
+# arguments to specify any argument that should cause a process to be monitored.
+#com.instana.plugin.process:
+#  processes:
+#    - 'sshd'
+#    - 'slapd'
+#  arguments:
+#    - '/opt/script.sh'
+#  services:
+#    - 'nginx'
+#    - 'windows-service'
+# JBoss AS:
+#com.instana.plugin.jbossas:
+#  monitor-ejb-deployments: true
+# Memcached
+#com.instana.plugin.memcached:
+#  user: ''
+#  password: ''
+# MongoDB
+#com.instana.plugin.mongodb:
+#  user: ''
+#  source: '' # database where the user is defined
+#  password: ''
+#  sslTrustStore: '/path/to/truststore.jks'
+#  sslTrustStorePassword: 'mongoTsPassword'
+#  sslKeyStore: '/path/to/sslKeyStoreFile.jks'
+#  sslKeyStorePassword: 'mongoKsPassword'
+# Mssql
+#com.instana.plugin.mssql:
+#  user: ''
+#  password: ''
+# Mysql
+#com.instana.plugin.mysql:
+#  user: ''
+#  password: ''
+#  schema_excludes: ['INFORMATION_SCHEMA', 'PERFORMANCE_SCHEMA']
+# MariaDB
+#com.instana.plugin.mariadb:
+#  user: ''
+#  password: ''
+# OracleDB
+#com.instana.plugin.oracledb:
+#  # Local monitoring configuration
+#  password: ''
+#  user: '' #default is 'sys as sysdba'
+#  port: '' #default '1521'
+#  host: '' #default is 'localhost'
+#  # Remote monitoring configuration
+#  remote:
+#    - host: ''
+#      port: ''
+#      databaseSID: ''
+#      user: '' #default is 'sys as sysdba'
+#      password: ''
+#      availabilityZone: '' #default is 'Remote Monitoring'
+# PostgreSQL
+#com.instana.plugin.postgresql:
+#  user: ''
+#  password: ''
+#  database: '' # by default PostgreSQL will use 'user' as database to connect to.
+# Redis
+#com.instana.plugin.redis:
+#  password: ''
+#  Instana requires the CONFIG command. If it was renamed using 'rename-command'
+#  this setting can be used to tell Instana the new name
+#  config-command: 'CONFIG'
+#  Monitor certain values in Redis
+#  monitor:
+#    - db: 0 # db number - defaults to 0 if absent
+#      key: 'logstash' # key of value, given as string
+#      type: 'list-length' # metric type. Currently only supports 'list-length'
+# RabbitMq
+#com.instana.plugin.rabbitmq:
+#  user: 'guest'
+#  password: 'guest'
+#  monitorQueues:
+#    - queue: queueName #name of the queue
+#      vhost: / #name of the vhost, default is '/'
+# SpringBoot
+#com.instana.plugin.springboot:
+#  metrics-interval: 1
+#  health-interval: 30
+# OpenLDAP
+#com.instana.plugin.openldap:
+#  user: '' # query like 'cn=Manager,dc=example,dc=com'
+#  password: '' # password for 'simple' authentication
+#  port: 10389 # default is 389
+#  schemaPath: '' # path to schema files
+# StatsD
+#com.instana.plugin.statsd:
+#  enabled: true # disabled by default
+#  ports:
+#    udp: 8125
+#    mgmt: 8126
+#  flush-interval: 10 # 10 seconds by default
+# Sap HANA
+#com.instana.plugin.saphana:
+#  singleContainer:
+#    user: '' #default is 'SYSTEM'
+#    password: ''
+#  multiContainer:
+#    DATABASE_NAME_1: #example 'HXE'
+#      user: '' #default is 'SYSTEM'
+#      password: ''
+#    DATABASE_NAME_2:
+#      user: '' #default is 'SYSTEM'
+#      password: ''
+# Sybase SQL Anywhere
+#com.instana.plugin.sybase:
+#  servers:
+#    SERVER_NAME_1: #example 'server1'
+#      port: '' #default '2638'
+#      database: '' #default is 'demo'
+#      user: '' #default is 'DBA'
+#      password: '' #default is 'sql'
+# HashiCorp Consul
+#com.instana.plugin.consul:
+#  enabled: true   # enabled by default
+#  client: ''      # client endpoint hostname, by default sensor will parse '-client' parameter or use 'localhost'
+#  httpPort: ''    # client endpoint http port, by default sensor will parse '-http-port' parameter or use '8500'
+#  token: ''       # 'token' to access consul endpoint when 'acl_default_policy' is set to 'deny'
+# Jenkins
+#com.instana.plugin.jenkins:
+#  user: '' #default is 'user'
+#  password: '' #default is 'user'
+# Java & Custom JMX
+#com.instana.plugin.java:
+#  jmx:
+#    # JMX is NOT hot-reloaded and needs to be set before a JVM is discovered.
+#    # Supported attribute types are Number and Boolean
+#    # delta calculation is only supported for Number
+#    - object_name: 'java.lang:type=Compilation'
+#      metrics:
+#        - attributes: 'TotalCompilationTime'
+#          type: 'delta' # delta will report the change to the previous second
+#    - object_name: 'java.lang:type=ClassLoading'
+#      metrics:
+#        - attributes: 'LoadedClassCount'
+#          type: 'absolute' # absolute will report the value as-is
+#  dropwizardMetricCollection:
+#    enabled: true
+#    limit: 200
+#  micrometerMetricCollection:
+#    enabled: true
+#    limit: 200
+# General Tracing Settings
+#com.instana.tracing:
+#  extra-http-headers:
+#    # List of extra headers that should be captured by Instana.
+#    # Will be matched using case-insensitive match.
+#    - 'x-loadtest-id'
+# Java Tracing
+#com.instana.plugin.javatrace:
+#  instrumentation:
+#    # Lightweight Bytecode Instrumentation, enabled by default
+#    # Disabling currently requires an agent restart
+#    enabled: true
+#    # OpenTracing instrumentation, disabled by default
+#    # Enabling requires an agent restart
+#    opentracing: false
+#    # To enable using the SDK, provide a list of packages that should be
+#    # scanned for SDK annotations. All subpackages are scanned, as it is a
+#    # starts-with prefix matching.
+#    # Scanning a large amount of classes slows down agent attach and requires
+#    # more CPU for parsing, therefore it is recommended to limit to packages
+#    # actually using SDK annotations.
+#    # By default no packages are scanned for SDK annotations.
+#    sdk:
+#      packages:
+#        - 'com.instana.backend'
+#        - 'com.instana.frontend'
+# PHP Tracing
+#com.instana.plugin.php:
+#  # Lightweight PHP Tracing. Requires the Instana Tracing extension. Enabled by default.
+#  tracing:
+#    # Enabling tracing will automatically download the Instana Tracing
+#    # extension and enable it in your php.ini. If you are using preforked
+#    # PHP workers, like PHP-FPM, you will need to restart them. Disabling
+#    # tracing again will not remove the extension. It will only disable the
+#    # tracing sensor.
+#    enabled: true
+#    # Whether to install the PHP Tracing extension. Default is true. Disabling
+#    # the installation will still create the TraceAcceptor daemon though.
+#    installExtension: true
+#    # The filename to use when querying Apache or PHP-CGI installations for
+#    # environment data such as version, architecture, etc. By default, this
+#    # is "instana." + Math.random(). + ".php". Uncommenting the setting
+#    # below will force a static filename instead.
+#    phpInfoFilename: instana.php
+#    # Pins the PHP Tracing extension to download and install to a specific
+#    # version. This can be used to rollback to previous versions of the
+#    # extension or to test beta versions (when asked to do so). Expects
+#    # the version to be given as major.minory.patch, e.g. 0.3.7
+#    pinExtensionVersion: x.y.z
+#    # The absolute path to the script to trigger whenever the sensor installed
+#    # a different version of the PHP tracing extension than is currently
+#    # installed. Works for upgrades and downgrades. Default is empty.
+#    notificationScript: /path/to/restart_php.sh
+#    # The number of executor threads to use for processing traces. This setting
+#    # can be used to fine tune the PHP sensor for specific load environments.
+#    # Defaults to the number of available logical processors or 8 (whichever is less).
+#    # In general, you don't need to touch this setting unless advised to do so.
+#    executorThreads: n
+#    # The maximum number of traces the sensor is allowed to keep in the backlog
+#    # for processing. Can be used in conjunction with executorThreads to fine tune
+#    # the sensor for specific load environments. In general, you don't need to touch
+#    # this setting unless advised to do so. Defaults to 1000.
+#    executorQueueLimit: 1000
+#    # Port on which the sensor is listening for traces. Changing this setting will
+#    # not automatically update any .ini files created for the PHP Tracing extension.
+#    # In general, you don't need to touch this setting unless advised to do so.
+#    # Defaults to port 16816.
+#    port: 16816
+#    # Whether to remove values in SQL queries to prevent sensitive data from
+#    # reaching our backend. This can help to improve agent performance in certain
+#    # setups. In general, you don't need to touch this setting unless advised to do so.
+#    sanitizeSql: true
+# .NET Full Framework tracing
+com.instana.plugin.clr:
+#  # Tracing for .NET Full Framework CLR. Currently disabled by default
+  tracing:
+#    # Enabling tracing will instruct the agent to register the IL-rewriting components for .NET
+#    # alongside with the instrumentation-libraries.
+#    # It will also set the environment-variables for any IIS hosted .NET applications.
+#    # Non-IIS hosted applications which you want to trace need these env-vars to be set
+#    # manually before starting the actual process
+#    # (see the docs here: https://docs.instana.io/ecosystem/dot-net/#enabling-tracing-for-non-iis-hosted-applications)
+    enabled: true
+#    # The absolute path to a batch-file that should be executed when the tracing-components for
+#    # NET Full Framework (Windows) have been updated. You can use this script to automate tasks
+#    # that should be executed when new tracing-components get installed. This usually will be
+#    # process-restarts or issuing an iisreset command, so that the processes can pickup the new components.
+#    # The commands issued in the script should be executed asynchronously (start /b <cmd>) in order to not
+  #    # slow down the startup-time of InstanaPCP. In case of long-running synchronous tasks (like iisreset) you might
+  #    # see warnings in the log concerning the unavailability of InstanaPCP for the duration of the execution.
+  #    update_script: <absolute_path_to_batchfile>
+    #  # Memory-limits for InstanaPCP.
+    #  # You can specify these limits to account for high expected load and/or a lot of
+    #  # infrastructure-components being monitored. Values are in mega-bytes.
+    #  pcp_warn_limit: 150
+    #  pcp_stop_limit: 250
+    #com.instana.plugin.python:
+    #  # Python autodiscovery will automatically find and instrument Python processes.
+    #  # This is supported on Linux 64bit Python processes.
+    #  autodiscovery:
+    #    # Valid values: true, false
+    #    enabled: true
+    #
+    #    # the autodiscovery white list is used to identify python processes.  It is applied
+    #    # _before_ the blacklist to get a list of potential candidate processes.  The white
+    #    # list is used to create a list of processes that contain the following strings in
+    #    # their command line.
+    #    whitelist:
+    #      - 'gunicorn'
+    #      - 'uwsgi'
+    #
+    #    # the autodiscovery black list is used to identify processes to ignore.  It is applied
+    #    # _after_ the whitelist.  Any processes that have the following strings in their
+    #    # command line will be ignored.
+    #    blacklist:
+    #      - 'pipenv'         # pipenv processes
+    #      - 'runserver'      # development webservers
+    #      - 'setup.py'
+    #      - 'ipython'
+    # Synthetic Ping
+    # com.instana.plugin.ping:
+    #   endpoints:
+    #     NAME: # example 'DC_EAST'
+    #       type: '' # supported types : 'icmp', 'http'
+    #       target: '' # host address
+    # ETCD
+    # com.instana.plugin.etcd:
+    #   caCertificate: '' # path to CA certificate (eg. /etc/etcd/ca.crt)
+    #   clientCertificate: '' # path to client certificate (eg. /etc/etcd/client.crt)
+    #   clientKey: '' # path to client key (eg. /etc/etcd/client.key)
+    # Google Cloud SQL
+    #com.instana.plugin.gcp.sql:
+    #  enabled: true
+    #  poll_rate: 60 # How often Google's monitoring API will be polled
+    #  credentials_path: '/opt/instana/credentials/cred-gcp.json' # Path to Service Account credentials
+    # eBPF tracing
+    # # Only available on Linux hosts. Requires a 4.7 or later kernel. Red Hat
+    # # however has backported BPF to RHEL 7.6 (kernel version 3.10.0-957).
+    # com.instana.plugin.ebpf:
+    #   enabled: false

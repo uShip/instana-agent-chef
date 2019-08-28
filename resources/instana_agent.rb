@@ -8,6 +8,7 @@ action :install do
   systemd_srv_dir = '/etc/systemd/system/instana-agent.service.d'
   gpg_path = 'https://packages.instana.io/Instana.gpg'
   domain = "https://_:#{new_resource.key}@packages.instana.io"
+  config_dir = ''
 
   if node['platform'] == 'windows'
     include_recipe 'java_se'
@@ -21,8 +22,8 @@ action :install do
       source 'https://download.microsoft.com/download/6/F/5/6F5FF66C-6775-42B0-86C4-47D41F2DA187/Win8.1AndW2K12R2-KB3191564-x64.msu'
       checksum 'a8d788fa31b02a999cc676fb546fc782e86c2a0acd837976122a1891ceee42c0'
       action :install
-			notifies :reboot_now, 'reboot[powershell]', :immediately
-			not_if { ::Powershell::VersionHelper.powershell_version?('5.1') }
+      notifies :reboot_now, 'reboot[powershell]', :immediately
+      not_if { ::Powershell::VersionHelper.powershell_version?('5.1') }
     end
 
     base_url = node['instana']['agent']['base_url']
@@ -40,17 +41,8 @@ action :install do
       PSH
     end
 
-    windows_config_dir =
+    config_dir =
       "#{node['instana']['agent']['windows']['dir']}\\instana-agent\\etc\\instana"
-
-    template "#{windows_config_dir}\\com.instana.agent.main.sender.Backend.cfg" do
-      source 'agent_backend.erb'
-      cookbook 'instana-agent'
-      sensitive true
-      variables(
-        config_vars.merge key: new_resource.key
-      )
-    end
 
     # This is the service wrapper file that was downloaded from https://github.com/kohsuke/winsw per
     # the instructions at https://docs.instana.io/quick_start/agent_setup/windows/#service-wrapper-download
@@ -68,6 +60,15 @@ action :install do
       )
     end
 
+    template "#{config_dir}/configuration.yaml" do
+      source 'windows_agent_config.erb'
+      cookbook 'instana-agent'
+      variables(
+        zone: node['instana']['agent']['zone'],
+        tags: node['instana']['agent']['tags']
+      )
+    end
+
     powershell_script 'install_instana' do
       code '.\instana-agent.exe install'
       cwd node['instana']['agent']['windows']['dir']
@@ -79,6 +80,8 @@ action :install do
       # not_if 'Get-Service -name "Instana Agent" | Where-Object {$_.Status -eq "Running"}'
     end
   else
+    config_dir = node['instana']['agent']['config_dir']
+
     if node['platform_family'] == 'debian'
       package 'apt-transport-https' do
         action :install
@@ -155,18 +158,6 @@ action :install do
       command 'systemctl daemon-reload'
     end
 
-    template "#{node['instana']['agent']['config_dir']}/com.instana.agent.main.sender.Backend.cfg" do
-      source 'agent_backend.erb'
-      cookbook 'instana-agent'
-      mode '0640'
-      owner 'root'
-      group 'root'
-      sensitive true
-      variables(
-        config_vars.merge key: new_resource.key
-      )
-    end
-
     template '/opt/instana/agent/etc/mvn-settings.xml' do
       source 'maven_settings.erb'
       cookbook 'instana-agent'
@@ -185,36 +176,6 @@ action :install do
       mode '0640'
       owner 'root'
       group 'root'
-    end
-
-    template "#{node['instana']['agent']['config_dir']}/com.instana.agent.main.config.UpdateManager.cfg" do
-      source 'agent_update.erb'
-      cookbook 'instana-agent'
-      mode '0640'
-      owner 'root'
-      group 'root'
-      action :create
-      variables(
-        interval: node['instana']['agent']['update']['interval'],
-        enabled: (node['instana']['agent']['update']['enabled'] ? 'AUTO' : 'OFF'),
-        time: node['instana']['agent']['update']['time']
-      )
-      only_if do
-        node['instana']['agent']['update']['pin'] == '' &&
-          node['instana']['agent']['update']['enabled']
-      end
-    end
-
-    template "#{node['instana']['agent']['config_dir']}/com.instana.agent.bootstrap.AgentBootstrap.cfg" do
-      source 'agent_bootstrap.erb'
-      cookbook 'instana-agent'
-      mode '0640'
-      owner 'root'
-      group 'root'
-      action :create
-      variables(
-        version: node['instana']['agent']['update']['pin']
-      )
     end
 
     template "#{node['instana']['agent']['config_dir']}/configuration.yaml" do
@@ -254,6 +215,50 @@ action :install do
       subscribes :restart, 'execute[systemd-daemon-reload]'
       subscribes :restart, 'template[/opt/instana/agent/etc/mvn-settings.xml]'
       subscribes :restart, 'template[/opt/instana/agent/etc/org.ops4j.pax.url.mvn.cfg]'
+    end
+  end
+
+  config_owner = node['platform'] == 'windows' ? 'Administrator' : 'root'
+
+  template "#{config_dir}/com.instana.agent.main.sender.Backend.cfg" do
+    source 'agent_backend.erb'
+    cookbook 'instana-agent'
+    mode '0640'
+    owner config_owner
+    group config_owner
+    sensitive true
+    variables(
+      config_vars.merge key: new_resource.key
+    )
+  end
+
+  template "#{config_dir}/com.instana.agent.bootstrap.AgentBootstrap.cfg" do
+    source 'agent_bootstrap.erb'
+    cookbook 'instana-agent'
+    mode '0640'
+    owner config_owner
+    group config_owner
+    action :create
+    variables(
+      version: node['instana']['agent']['update']['pin']
+    )
+  end
+
+  template "#{config_dir}/com.instana.agent.main.config.UpdateManager.cfg" do
+    source 'agent_update.erb'
+    cookbook 'instana-agent'
+    mode '0640'
+    owner 'root'
+    group 'root'
+    action :create
+    variables(
+      interval: node['instana']['agent']['update']['interval'],
+      enabled: (node['instana']['agent']['update']['enabled'] ? 'AUTO' : 'OFF'),
+      time: node['instana']['agent']['update']['time']
+    )
+    only_if do
+      node['instana']['agent']['update']['pin'] == '' &&
+        node['instana']['agent']['update']['enabled']
     end
   end
 end
