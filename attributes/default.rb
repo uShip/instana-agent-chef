@@ -114,5 +114,5 @@ default['instana']['agent']['base_url'] = 'artifact-public.instana.io/artifactor
 # Default location to install Instana
 default['instana']['agent']['windows']['dir'] = 'C:/ProgramData/Instana'
 
-default['instana']['agent']['windows']['build_date'] = '20190812'
-default['instana']['agent']['windows']['build_number'] = '065352-4002'
+default['instana']['agent']['windows']['build_date'] = '20191030'
+default['instana']['agent']['windows']['build_number'] = '160747-4342'
